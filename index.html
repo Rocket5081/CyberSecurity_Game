@@ -679,7 +679,7 @@
         <div class="screen-title">Game Selection</div>
         <p>Choose a cybersecurity scenario to play:</p>
         
-        <div class="game-card" onclick="startGame('Phising Defense')">
+        <div class="game-card" onclick="startGame('Phishing Defense')">
             <h3>Phishing Attacks</h3>
             <p>Learn to identify and avoid phishing attempts.</p>
             <div class="difficulty easy">Easy</div>
@@ -954,8 +954,13 @@
             
             // Handle user data update
             socket.on('userUpdated', (data) => {
-                currentUser = data.user;
-                updateProfilePage();
+               // Update the current user object with new data
+               currentUser = {...currentUser, ...data.user};
+    
+               // Update the profile if currently viewing it
+              if (document.getElementById('user-profile').classList.contains('active')) {
+                  updateProfilePage();
+              }
             });
             
             // Handle question data
@@ -1113,7 +1118,10 @@
            } else if (screenId === 'leaderboard') {
                // Request latest leaderboard data
                socket.emit('getLeaderboard');
-           } else {
+           }  else if (screenId === 'user-profile') {
+              // Update profile information when viewing profile
+              updateProfilePage();
+            } else {
                // If leaving game play, clear the timer
                if (gameTimer) {
                    clearInterval(gameTimer);
@@ -1180,7 +1188,7 @@
             document.getElementById('profile-username').textContent = currentUser.username;
             document.getElementById('profile-join-date').textContent = new Date(currentUser.registrationDate).toLocaleDateString();
             document.getElementById('profile-games-played').textContent = currentUser.gamesPlayed || 0;
-            document.getElementById('profile-high-score').textContent = currentUser.highScore || 0;
+            document.getElementById('profile-high-score').textContent = currentUser.highscore || 0;
             
             // Update category progress bars
             const phishingBar = document.getElementById('profile-phishing-progress');
@@ -1463,45 +1471,73 @@
             // Clear timer
             if (gameTimer) {
                 clearInterval(gameTimer);
+             }
+    
+            // Apply time bonus if there's remaining time
+            if (timeRemaining > 0) {
+                // Calculate time bonus - multiply score by a factor based on remaining time
+                const timeBonusFactor = 1 + (timeRemaining / 60);
+        
+                // Apply the bonus
+                const originalScore = currentScore;
+                currentScore = Math.round(originalScore * timeBonusFactor);
+        
+                console.log(`Time bonus applied: ${originalScore} × ${timeBonusFactor.toFixed(2)} = ${currentScore}`);
             }
-            
+    
             // Calculate percentage of correct answers
             const percentage = Math.round((correctAnswers / currentQuestions.length) * 100);
-            
+    
             // Update results screen
             document.getElementById('final-score').textContent = currentScore;
             document.getElementById('correct-answers').textContent = correctAnswers + '/' + currentQuestions.length;
             document.getElementById('correct-percentage').textContent = percentage;
             document.getElementById('category-progress').style.width = percentage + '%';
             document.getElementById('category-progress').textContent = percentage + '%';
-            
+    
             document.getElementById('played-category').textContent = 
                 currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1) + ' Security';
-            
+    
             // Update difficulty stats
             document.getElementById('easy-stats').textContent = easyCorrect + '/' + easyTotal;
             document.getElementById('medium-stats').textContent = mediumCorrect + '/' + mediumTotal;
             document.getElementById('hard-stats').textContent = hardCorrect + '/' + hardTotal;
-            
+    
+            // Add time bonus information to recommendations
+            if (timeRemaining > 0) {
+                const bonusMessage = document.createElement('p');
+                bonusMessage.innerHTML = `<strong>Time Bonus!</strong> You completed the quiz with ${timeRemaining} seconds remaining, earning a ${((timeRemaining/60)*100).toFixed(0)}% score bonus!`;
+                bonusMessage.style.color = '#4CAF50';
+               document.getElementById('recommendations').prepend(bonusMessage);
+            }
+    
             // Generate personalized recommendations
             generateRecommendations();
-            
+    
             // Send game results to server
             if (currentUser && !currentUser.isGuest) {
                 socket.emit('gameCompleted', {
-                    category: currentCategory,
-                    score: currentScore,
-                    correctAnswers: correctAnswers,
-                    totalQuestions: currentQuestions.length,
-                    progressPercent: percentage,
-                    difficulty: {
-                        easy: { correct: easyCorrect, total: easyTotal },
-                        medium: { correct: mediumCorrect, total: mediumTotal },
-                        hard: { correct: hardCorrect, total: hardTotal }
-                    }
-                });
+                category: currentCategory,
+                score: currentScore,
+                correctAnswers: correctAnswers,
+                totalQuestions: currentQuestions.length,
+                progressPercent: percentage,
+                difficulty: {
+                    easy: { correct: easyCorrect, total: easyTotal },
+                    medium: { correct: mediumCorrect, total: mediumTotal },
+                    hard: { correct: hardCorrect, total: hardTotal }
+                }
+            });
+        
+            // Update local user data if new score is higher
+            if (currentScore > (currentUser.highscore || 0)) {
+                currentUser.highscore = currentScore;
             }
-            
+        
+               // Update profile page in case user navigates there
+               updateProfilePage();
+            }
+    
             // Switch to results screen
             switchScreen('game-results');
         }
