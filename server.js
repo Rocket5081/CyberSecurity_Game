@@ -281,7 +281,7 @@ io.on('connection', (socket) => {
         });
       }
   
-      // Rest of your code remains the same...
+      // Update game state
       gameState.players[socket.id] = {
         userId: user.UserID,
         username: user.Username,
@@ -294,7 +294,7 @@ io.on('connection', (socket) => {
         user: {
           userId: user.UserID,
           username: user.Username,
-          highscore: user.Highscore,
+          highscore: user.Highscore,  // Make sure this property is correct
           registrationDate: user.RegistrationDate
         }
       });
@@ -328,41 +328,46 @@ io.on('connection', (socket) => {
   // Game Completed
   socket.on('gameCompleted', async ({ score, category }) => {
     try {
-      console.log(`Game completed by ${socket.id} with score ${score} in ${category}`);
       const player = gameState.players[socket.id];
-    
-      if (!player) {
-        console.log("No player found for this socket");
-        return;
-      }
-    
-      if (player.isGuest) {
-        console.log("Player is a guest, not saving score");
-        return;
-      }
-
-      console.log(`Updating score for ${player.username}`);
+      if (!player || player.isGuest) return;
+  
       // Update user score
       const result = await updateUserScore(player.username, score);
-      console.log("Update result:", result);
     
       if (result.success) {
         // If it was a new high score, broadcast to other players
         if (result.newHighScore) {
-          console.log(`New high score for ${player.username}: ${score}`);
           io.emit('newHighScore', {
             username: player.username,
             score: score,
             category: category
           });
         }
-    
+      
         // Get updated leaderboard
         const leaderboard = await getLeaderboard();
-        console.log("Updated leaderboard:", leaderboard);
-    
+      
         // Send back to all clients
         io.emit('leaderboardUpdated', { leaderboard });
+        
+        // Add this section to send updated user data
+        const { data: updatedUser } = await supabase
+          .from('User')
+          .select('UserID, Username, Highscore, RegistrationDate')
+          .eq('Username', player.username)
+          .single();
+          
+        if (updatedUser) {
+          // Send updated user data to this client
+          socket.emit('userUpdated', { 
+            user: {
+              userId: updatedUser.UserID,
+              username: updatedUser.Username,
+              highscore: updatedUser.Highscore,
+              registrationDate: updatedUser.RegistrationDate
+            }
+          });
+        }
       }
     } catch (error) {
       console.error('Game completion error:', error);
