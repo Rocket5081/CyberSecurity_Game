@@ -268,20 +268,27 @@ io.on('connection', (socket) => {
         credentials.username,
         credentials.password
       );
-
+  
       if (error) {
-        // Fallback to guest login
-        return handleGuestLogin(socket, credentials.username);
+        // Check if it's an invalid password error or user not found
+        const errorMessage = error === 'Invalid password' ? 
+          'Invalid password' : 'User not found';
+        
+        // Return error to the client instead of falling back to guest login
+        return socket.emit('loginResponse', {
+          success: false,
+          message: errorMessage
+        });
       }
-
-      // Update game state
+  
+      // Rest of your code remains the same...
       gameState.players[socket.id] = {
         userId: user.UserID,
         username: user.Username,
         online: true,
         isGuest: false
       };
-
+  
       socket.emit('loginResponse', {
         success: true,
         user: {
@@ -291,7 +298,7 @@ io.on('connection', (socket) => {
           registrationDate: user.RegistrationDate
         }
       });
-
+  
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     } catch (error) {
       console.error('Login error:', error);
