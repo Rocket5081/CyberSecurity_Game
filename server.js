@@ -17,6 +17,10 @@ const supabaseUrl = 'https://cclodkiuzkvynhnauaeu.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Track failed login attempts and account lockouts
+const userLoginAttempts = {}; // Track failed login attempts by username
+const userLockoutTimes = {}; // Track locked accounts and their unlock times
+
 // Serve static files
 app.use(express.static(path.join(__dirname)));
 
@@ -24,6 +28,10 @@ app.use(express.static(path.join(__dirname)));
 const gameState = {
   players: {}
 };
+
+//For tracking Login Attempts by user
+const loginAttempts = {}; // Track failed login attempts by username
+const lockedAccounts = {}; // Track locked accounts and their unlock times
 
 // SHA256 Helper Function
 function sha256(message) {
@@ -57,16 +65,62 @@ async function registerUser(userData) {
 }
 
 async function authenticateUser(username, password) {
+  // Check if account is locked
+  if (userLockoutTimes[username]) {
+    const unlockTime = userLockoutTimes[username];
+    const currentTime = Date.now();
+    
+    if (currentTime < unlockTime) {
+      // Account is still locked
+      const remainingSeconds = Math.ceil((unlockTime - currentTime) / 1000);
+      return { 
+        error: 'Account locked', 
+        lockTimeRemaining: remainingSeconds 
+      };
+    } else {
+      // Lock period expired, remove the lock
+      delete userLockoutTimes[username];
+      userLoginAttempts[username] = 0;
+    }
+  }
+
   const hashedPassword = sha256(password);
   
   const { data, error } = await supabase
     .from('User')
-    .select('UserID, Username, Password_hash, Highscore, RegistrationDate')
+    .select('UserID, Username, Password_hash, Highscore, GamesPlayed, RegistrationDate')
     .eq('Username', username)
     .single();
 
-  if (error || !data) return { error: 'User not found' };
-  if (data.Password_hash !== hashedPassword) return { error: 'Invalid password' };
+  if (error || !data) {
+    // Don't increment attempt counter for non-existent users
+    return { error: 'User not found' };
+  }
+  
+  if (data.Password_hash !== hashedPassword) {
+    // Increment failed attempts counter
+    userLoginAttempts[username] = (userLoginAttempts[username] || 0) + 1;
+    
+    // Check if we should lock the account
+    if (userLoginAttempts[username] >= 3) {
+      // Calculate lock duration: 30 seconds for first lock, doubling each time
+      const lockCount = Math.floor(userLoginAttempts[username] / 3);
+      const lockDuration = 30 * Math.pow(2, lockCount - 1) * 1000; // in milliseconds
+      
+      userLockoutTimes[username] = Date.now() + lockDuration;
+      
+      const lockTimeSeconds = Math.ceil(lockDuration / 1000);
+      return { 
+        error: 'Account locked',
+        lockTimeRemaining: lockTimeSeconds 
+      };
+    }
+    
+    return { error: 'Invalid password', failedAttempts: userLoginAttempts[username] };
+  }
+
+  // Login successful, reset the failed attempts counter
+  userLoginAttempts[username] = 0;
 
   return { user: data };
 }
@@ -146,7 +200,7 @@ async function getLeaderboard() {
   }
 }
 
-// Replace the updateLeaderboard function with this one
+
 async function updateUserScore(username, score) {
   try {
     // Get user data first to check if score is higher than current
@@ -264,23 +318,32 @@ io.on('connection', (socket) => {
   // User Login
   socket.on('login', async (credentials) => {
     try {
-      const { user, error } = await authenticateUser(
+      const { user, error, lockTimeRemaining, failedAttempts } = await authenticateUser(
         credentials.username,
         credentials.password
       );
-  
+
       if (error) {
-        // Check if it's an invalid password error or user not found
-        const errorMessage = error === 'Invalid password' ? 
-          'Invalid password' : 'User not found';
-        
-        // Return error to the client instead of falling back to guest login
-        return socket.emit('loginResponse', {
-          success: false,
-          message: errorMessage
-        });
+        if (error === 'Account locked') {
+          return socket.emit('loginResponse', {
+            success: false,
+            message: `Account locked. Try again in ${lockTimeRemaining} seconds.`,
+            lockTimeRemaining: lockTimeRemaining
+          });
+        } else if (error === 'Invalid password') {
+          const attemptsLeft = 3 - failedAttempts;
+          return socket.emit('loginResponse', {
+            success: false,
+            message: `Invalid password. ${attemptsLeft} attempts remaining before timeout.`
+          });
+        } else {
+          return socket.emit('loginResponse', {
+            success: false,
+            message: error
+          });
+        }
       }
-  
+
       // Update game state
       gameState.players[socket.id] = {
         userId: user.UserID,
@@ -288,18 +351,18 @@ io.on('connection', (socket) => {
         online: true,
         isGuest: false
       };
-  
+
       socket.emit('loginResponse', {
         success: true,
         user: {
           userId: user.UserID,
           username: user.Username,
-          highscore: user.Highscore,  
+          highscore: user.Highscore,
           gamesPlayed: user.GamesPlayed || 0,
           registrationDate: user.RegistrationDate
         }
       });
-  
+
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     } catch (error) {
       console.error('Login error:', error);
