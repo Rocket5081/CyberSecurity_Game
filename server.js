@@ -294,7 +294,8 @@ io.on('connection', (socket) => {
         user: {
           userId: user.UserID,
           username: user.Username,
-          highscore: user.Highscore,  // Make sure this property is correct
+          highscore: user.Highscore,  
+          gamesPlayed: user.GamesPlayed || 0,
           registrationDate: user.RegistrationDate
         }
       });
@@ -330,45 +331,77 @@ io.on('connection', (socket) => {
     try {
       const player = gameState.players[socket.id];
       if (!player || player.isGuest) return;
-  
-      // Update user score
-      const result = await updateUserScore(player.username, score);
+
+      // Update user score and games played count
+      const { data: user, error: userError } = await supabase
+        .from('User')
+        .select('UserID, Highscore, GamesPlayed')
+        .eq('Username', player.username)
+        .single();
     
-      if (result.success) {
-        // If it was a new high score, broadcast to other players
-        if (result.newHighScore) {
-          io.emit('newHighScore', {
-            username: player.username,
-            score: score,
-            category: category
-          });
-        }
-      
-        // Get updated leaderboard
-        const leaderboard = await getLeaderboard();
-      
-        // Send back to all clients
-        io.emit('leaderboardUpdated', { leaderboard });
-        
-        // Add this section to send updated user data
-        const { data: updatedUser } = await supabase
-          .from('User')
-          .select('UserID, Username, Highscore, RegistrationDate')
-          .eq('Username', player.username)
-          .single();
-          
-        if (updatedUser) {
-          // Send updated user data to this client
-          socket.emit('userUpdated', { 
-            user: {
-              userId: updatedUser.UserID,
-              username: updatedUser.Username,
-              highscore: updatedUser.Highscore,
-              registrationDate: updatedUser.RegistrationDate
-            }
-          });
-        }
+      if (userError) {
+        console.error("Error fetching user:", userError);
+        return { error: 'User not found' };
       }
+    
+      // Increment games played counter
+      const gamesPlayed = (user.GamesPlayed || 0) + 1;
+    
+      // Prepare update data
+      const updateData = { 
+        GamesPlayed: gamesPlayed 
+      };
+    
+      // Also update highscore if new score is higher
+      if (score > user.Highscore) {
+        updateData.Highscore = score;
+      }
+    
+      // Update the user record
+      const { data, error } = await supabase
+        .from('User')
+        .update(updateData)
+        .eq('UserID', user.UserID);
+      
+      if (error) {
+        console.error("Error updating user data:", error);
+        return { error: error.message };
+      }
+    
+      // Get updated user data to send back
+      const { data: updatedUser } = await supabase
+        .from('User')
+        .select('UserID, Username, Highscore, RegistrationDate, GamesPlayed')
+        .eq('Username', player.username)
+        .single();
+      
+      if (updatedUser) {
+        // Send updated user data to this client
+        socket.emit('userUpdated', { 
+          user: {
+            userId: updatedUser.UserID,
+            username: updatedUser.Username,
+            highscore: updatedUser.Highscore,
+            gamesPlayed: updatedUser.GamesPlayed,
+            registrationDate: updatedUser.RegistrationDate
+          }
+        });
+      }
+    
+      // Notify other users of a new high score if applicable
+      if (score > user.Highscore) {
+        io.emit('newHighScore', {
+          username: player.username,
+          score: score,
+          category: category
+        });
+      }
+    
+      // Get updated leaderboard
+      const leaderboard = await getLeaderboard();
+    
+      // Send back to all clients
+      io.emit('leaderboardUpdated', { leaderboard });
     } catch (error) {
       console.error('Game completion error:', error);
     }
