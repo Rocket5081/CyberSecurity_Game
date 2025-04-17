@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
             min-height: 100vh;
             background-color: #f5f5f5;
         }
-        
+
         .screen {
             display: none;
             width: 90%;
@@ -28,18 +29,18 @@
             border: 2px solid #000;
             position: relative;
         }
-        
+
         .active {
             display: block;
         }
-        
+
         .screen-title {
             font-size: 24px;
             margin-bottom: 20px;
             font-weight: bold;
             text-align: center;
         }
-        
+
         /* Login/Register Specific Styles */
         .game-title {
             font-size: 24px;
@@ -47,32 +48,33 @@
             font-weight: bold;
             text-align: left;
         }
-        
+
         .game-logo {
             font-size: 18px;
             margin-bottom: 30px;
             text-align: center;
         }
-        
-        .login-form, .create-account-form {
+
+        .login-form,
+        .create-account-form {
             border: 1px solid #ddd;
             padding: 20px;
             margin: 0 auto;
             max-width: 400px;
             background-color: #f9f9f9;
         }
-        
+
         .form-group {
             margin-bottom: 15px;
             text-align: left;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        
+
         .form-group input {
             width: 100%;
             padding: 10px;
@@ -81,12 +83,12 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        
+
         .form-links {
             text-align: left;
             margin-top: 10px;
         }
-        
+
         .form-links a {
             display: block;
             color: #4CAF50;
@@ -94,7 +96,7 @@
             margin-bottom: 5px;
             cursor: pointer;
         }
-        
+
         .password-strength {
             height: 5px;
             margin-top: 5px;
@@ -102,14 +104,14 @@
             border-radius: 3px;
             position: relative;
         }
-        
+
         .password-strength-indicator {
             height: 100%;
             border-radius: 3px;
             width: 0%;
             transition: width 0.3s, background-color 0.3s;
         }
-        
+
         /* Password Requirements Section */
         .password-requirements {
             margin: 15px 0;
@@ -118,30 +120,30 @@
             border-radius: 5px;
             text-align: left;
         }
-        
+
         .password-requirements h3 {
             margin-top: 0;
             font-size: 16px;
         }
-        
+
         .password-requirements ul {
             margin: 0;
             padding-left: 20px;
         }
-        
+
         .password-requirements li {
             margin-bottom: 5px;
             font-size: 14px;
         }
-        
+
         .password-requirements li.met {
             color: #4CAF50;
         }
-        
+
         .password-requirements li.unmet {
             color: #F44336;
         }
-        
+
         /* Button Styles */
         button {
             background-color: #4CAF50;
@@ -157,31 +159,31 @@
             transition: background-color 0.3s;
             margin: 5px;
         }
-        
+
         button:hover {
             background-color: #45a049;
         }
-        
+
         button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
-        
+
         .secondary-button {
             background-color: #f1f1f1;
             color: #333;
         }
-        
+
         .secondary-button:hover {
             background-color: #e0e0e0;
         }
-        
+
         .button-group {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
-        
+
         .error-message {
             color: red;
             text-align: left;
@@ -189,7 +191,7 @@
             font-size: 14px;
             min-height: 20px;
         }
-        
+
         .success-message {
             color: #4CAF50;
             text-align: center;
@@ -199,7 +201,7 @@
             border-radius: 5px;
             display: none;
         }
-        
+
         /* Close button in top-right corner */
         .close-button {
             position: absolute;
@@ -211,13 +213,13 @@
             border: none;
             color: #999;
         }
-        
+
         /* Game-specific styles */
         .question-container {
             text-align: left;
             margin-bottom: 20px;
         }
-        
+
         .answer-option {
             text-align: left;
             margin: 10px 0;
@@ -226,32 +228,33 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        
+
         .answer-option:hover {
             background-color: #f0f0f0;
         }
-        
+
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        
-        .leaderboard-table th, .leaderboard-table td {
+
+        .leaderboard-table th,
+        .leaderboard-table td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        
+
         .leaderboard-table th {
             background-color: #4CAF50;
             color: white;
         }
-        
+
         .leaderboard-table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        
+
         .game-card {
             border: 1px solid #ddd;
             padding: 15px;
@@ -261,12 +264,12 @@
             transition: transform 0.2s;
             cursor: pointer;
         }
-        
+
         .game-card:hover {
             transform: scale(1.02);
             background-color: #f9f9f9;
         }
-        
+
         .difficulty {
             display: inline-block;
             padding: 3px 8px;
@@ -274,30 +277,20 @@
             font-size: 12px;
             color: white;
         }
-        
-        .easy {
-            background-color: #4CAF50;
-        }
-        
-        .medium {
-            background-color: #FFC107;
-        }
-        
-        .hard {
-            background-color: #F44336;
-        }
-        
+
+
+
         .profile-info {
             text-align: left;
             margin-bottom: 20px;
         }
-        
+
         .progress-container {
             width: 100%;
             background-color: #ddd;
             margin: 10px 0;
         }
-        
+
         .progress-bar {
             height: 20px;
             background-color: #4CAF50;
@@ -305,7 +298,7 @@
             line-height: 20px;
             color: white;
         }
-        
+
         /* Status bar for navigation */
         .status-bar {
             background-color: #333;
@@ -351,7 +344,7 @@
             background-color: #e8f5e9;
             border-color: #4CAF50;
         }
-        
+
         .answer-option.incorrect {
             background-color: #ffebee;
             border-color: #F44336;
@@ -375,7 +368,7 @@
         .difficulty-dot.active {
             background-color: #4CAF50;
         }
-        
+
         /* Online players container */
         .online-players-container {
             margin-top: 20px;
@@ -384,28 +377,28 @@
             border-radius: 5px;
             text-align: left;
         }
-        
+
         #player-list {
             list-style-type: none;
             padding: 0;
         }
-        
+
         #player-list li {
             padding: 5px;
             border-bottom: 1px solid #ddd;
         }
-        
+
         #player-list li.current-user {
             font-weight: bold;
             color: #4CAF50;
         }
-        
+
         .player-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .challenge-button {
             background-color: #4CAF50;
             color: white;
@@ -415,11 +408,11 @@
             cursor: pointer;
             font-size: 12px;
         }
-        
+
         .challenge-button:hover {
             background-color: #45a049;
         }
-        
+
         .chat-container {
             margin-top: 20px;
             padding: 10px;
@@ -427,7 +420,7 @@
             border-radius: 5px;
             text-align: left;
         }
-        
+
         #chat-messages {
             height: 150px;
             overflow-y: auto;
@@ -436,30 +429,30 @@
             background-color: white;
             margin-bottom: 10px;
         }
-        
+
         .chat-message {
             margin-bottom: 5px;
         }
-        
+
         .own-message {
             color: #4CAF50;
         }
-        
+
         .chat-input-container {
             display: flex;
         }
-        
+
         #chat-input {
             flex-grow: 1;
             padding: 5px;
             border: 1px solid #ddd;
             border-radius: 3px;
         }
-        
+
         #send-chat {
             margin-left: 5px;
         }
-        
+
         .challenge-modal {
             position: fixed;
             top: 0;
@@ -472,7 +465,7 @@
             align-items: center;
             z-index: 1000;
         }
-        
+
         .challenge-modal-content {
             background-color: white;
             padding: 20px;
@@ -480,17 +473,17 @@
             max-width: 400px;
             width: 80%;
         }
-        
+
         .category-buttons {
             display: flex;
             justify-content: space-between;
             margin: 20px 0;
         }
-        
+
         .modal-buttons {
             text-align: right;
         }
-        
+
         .notification {
             position: fixed;
             bottom: 50px;
@@ -505,12 +498,12 @@
             transition: opacity 0.5s, transform 0.5s;
             z-index: 1000;
         }
-        
+
         .notification.show {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         .achievement-popup {
             position: fixed;
             top: 0;
@@ -523,7 +516,7 @@
             align-items: center;
             z-index: 2000;
         }
-        
+
         .achievement-popup-content {
             background-color: white;
             padding: 20px;
@@ -532,7 +525,7 @@
             width: 80%;
             text-align: center;
         }
-        
+
         .achievement {
             display: flex;
             align-items: center;
@@ -542,23 +535,77 @@
             border-radius: 5px;
             text-align: left;
         }
-        
+
         .achievement-icon {
             font-size: 30px;
             margin-right: 15px;
         }
-        
+
         .achievement-title {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .achievement-description {
             font-size: 14px;
             color: #666;
         }
+
+        /* Chat specific styles */
+.chat-container {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#chat-messages {
+    height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.own-message {
+    background-color: #e8f5e9;
+}
+
+.chat-input-container {
+    display: flex;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+}
+
+#send-chat {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+#send-chat:hover {
+    background-color: #45a049;
+}
     </style>
 </head>
+
 <body>
     <!-- Splash Page -->
     <div id="splash-page" class="screen active">
@@ -568,7 +615,7 @@
         <div class="progress-container">
             <div class="progress-bar" id="loading-progress" style="width:0%">0%</div>
         </div>
-        
+
         <div class="button-group" style="justify-content: center; margin-top: 50px;">
             <button onclick="switchScreen('login-register')">Skip to Login</button>
         </div>
@@ -578,14 +625,14 @@
     <div id="login-register" class="screen">
         <div class="game-title">Cybersecurity Awareness Game</div>
         <div class="game-logo">Game Logo</div>
-        
+
         <div class="login-form">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username">
                 <div class="error-message" id="username-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password">
@@ -594,41 +641,41 @@
                 </div>
                 <div class="error-message" id="password-error"></div>
             </div>
-            
+
             <div class="form-links">
                 <a id="forgot-password">Forgot Password</a>
                 <button id="login-button" style="margin-top: 10px; width: 100%;">Login</button>
             </div>
         </div>
-        
+
         <div class="button-group">
             <button id="create-account-btn" onclick="switchScreen('create-account-screen')">Create Account</button>
             <button id="guest-play">Play as Guest</button>
         </div>
-        
+
         <div class="error-message" id="login-error"></div>
     </div>
-    
+
     <!-- Create Account Screen -->
     <div id="create-account-screen" class="screen">
         <!-- Close button -->
         <button class="close-button" onclick="switchScreen('login-register')">[x]</button>
-        
+
         <div class="game-title">Create Account</div>
-        
+
         <div class="create-account-form">
             <div class="form-group">
                 <label for="create-username">Username:</label>
                 <input type="text" id="create-username" name="username">
                 <div class="error-message" id="create-username-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="create-email">Email:</label>
                 <input type="email" id="create-email" name="email">
                 <div class="error-message" id="create-email-error"></div>
             </div>
-            
+
             <div class="form-group">
                 <label for="create-password">Password:</label>
                 <input type="password" id="create-password" name="password">
@@ -637,7 +684,7 @@
                 </div>
                 <div class="error-message" id="create-password-error"></div>
             </div>
-            
+
             <div class="password-requirements">
                 <h3>Password Requirements:</h3>
                 <ul id="requirements-list">
@@ -648,10 +695,10 @@
                     <li id="req-special" class="unmet">At least 1 special character</li>
                 </ul>
             </div>
-            
+
             <div class="success-message" id="create-success-message"></div>
         </div>
-        
+
         <div class="button-group">
             <button id="create-account-submit" disabled>Create Account</button>
             <button class="secondary-button" onclick="switchScreen('login-register')">Back to Login</button>
@@ -662,10 +709,10 @@
     <div id="main-menu" class="screen">
         <div class="screen-title">Main Menu</div>
         <div class="game-logo" style="font-size: 30px; margin: 20px 0;">🔒</div>
-        
+
         <p>Welcome to the Cybersecurity Awareness Game!</p>
         <p id="welcome-message">Test your knowledge about cybersecurity threats and protections.</p>
-        
+
         <div style="margin-top: 30px;">
             <button onclick="switchScreen('game-selection')" style="width: 200px; margin: 10px;">Play Game</button>
             <button onclick="switchScreen('user-profile')" style="width: 200px; margin: 10px;">User Profile</button>
@@ -678,25 +725,22 @@
     <div id="game-selection" class="screen">
         <div class="screen-title">Game Selection</div>
         <p>Choose a cybersecurity scenario to play:</p>
-        
+
         <div class="game-card" onclick="startGame('Phishing Defense')">
             <h3>Phishing Attacks</h3>
             <p>Learn to identify and avoid phishing attempts.</p>
-            <div class="difficulty easy">Easy</div>
         </div>
-        
+
         <div class="game-card" onclick="startGame('Social Engineering')">
             <h3>Social Engineering</h3>
             <p>Learn to identify and avoid social engineering attempts.</p>
-            <div class="difficulty medium">Medium</div>
         </div>
-        
+
         <div class="game-card" onclick="startGame('Password Security')">
             <h3>Mobile Device Security</h3>
             <p>Protecting your smartphone from various threats.</p>
-            <div class="difficulty hard">Hard</div>
         </div>
-        
+
         <div class="button-group" style="justify-content: center; margin-top: 20px;">
             <button onclick="switchScreen('main-menu')">Back to Menu</button>
         </div>
@@ -705,31 +749,31 @@
     <!-- User Profile Screen -->
     <div id="user-profile" class="screen">
         <div class="screen-title">User Profile</div>
-        
+
         <div class="profile-info">
             <h3>User Information</h3>
             <p><strong>Username:</strong> <span id="profile-username">CyberDefender</span></p>
             <p><strong>Join Date:</strong> <span id="profile-join-date">February 15, 2025</span></p>
             <p><strong>Games Played:</strong> <span id="profile-games-played">12</span></p>
             <p><strong>High Score:</strong> <span id="profile-high-score">850</span></p>
-            
+
             <h3>Performance Statistics</h3>
             <p><strong>Phishing Knowledge:</strong></p>
             <div class="progress-container">
                 <div class="progress-bar" id="profile-phishing-progress" style="width:75%">75%</div>
             </div>
-            
+
             <p><strong>Social Engineering:</strong></p>
             <div class="progress-container">
                 <div class="progress-bar" id="profile-social-progress" style="width:90%">90%</div>
             </div>
-            
+
             <p><strong>Mobile Security:</strong></p>
             <div class="progress-container">
                 <div class="progress-bar" id="profile-mobile-progress" style="width:60%">60%</div>
             </div>
         </div>
-        
+
         <div class="button-group">
             <button onclick="switchScreen('game-selection')">Play Game</button>
             <button onclick="switchScreen('leaderboard')">View Leaderboard</button>
@@ -740,7 +784,7 @@
     <!-- Game Play Screen -->
     <div id="game-play" class="screen">
         <div class="screen-title" id="game-play-title">Cybersecurity Quiz</div>
-        
+
         <div class="difficulty-indicator">
             <span id="difficulty-text">Difficulty:</span>
             <div>
@@ -749,19 +793,19 @@
                 <span class="difficulty-dot" id="diff-3"></span>
             </div>
         </div>
-        
+
         <div class="question-container">
             <h3>Question <span id="question-number">1</span>:</h3>
             <p id="question-text">Loading question...</p>
         </div>
-        
+
         <div class="answer-option" id="option-a" onclick="selectAnswer('a')">A. Loading option...</div>
         <div class="answer-option" id="option-b" onclick="selectAnswer('b')">B. Loading option...</div>
         <div class="answer-option" id="option-c" onclick="selectAnswer('c')">C. Loading option...</div>
         <div class="answer-option" id="option-d" onclick="selectAnswer('d')">D. Loading option...</div>
-        
+
         <div id="answer-feedback" style="margin: 20px 0; display: none; padding: 10px; border-radius: 5px;"></div>
-        
+
         <div class="button-group" style="justify-content: space-between;">
             <div>
                 <span>Score: <strong id="current-score">0</strong></span>
@@ -775,7 +819,7 @@
     <!-- Leaderboard Screen -->
     <div id="leaderboard" class="screen">
         <div class="screen-title">Leaderboard</div>
-        
+
         <table class="leaderboard-table">
             <thead>
                 <tr>
@@ -789,11 +833,11 @@
                 <!-- Leaderboard entries will be populated dynamically -->
             </tbody>
         </table>
-        
+
         <div style="margin-top: 20px; text-align: left; padding: 10px; background-color: #e8f5e9; border-radius: 5px;">
             <p><strong>Your Rank:</strong> <span id="user-rank">Not ranked yet</span></p>
         </div>
-        
+
         <div class="button-group">
             <button onclick="switchScreen('game-selection')">Play Again</button>
             <button onclick="switchScreen('user-profile')">View Profile</button>
@@ -804,30 +848,30 @@
     <!-- Game Results Screen -->
     <div id="game-results" class="screen">
         <div class="screen-title">Game Results</div>
-        
+
         <div style="margin: 20px 0; padding: 20px; background-color: #e8f5e9; border-radius: 10px;">
             <h2>Your Score: <span id="final-score">750</span></h2>
             <p>Correct Answers: <span id="correct-answers">15/20</span> (<span id="correct-percentage">75</span>%)</p>
-            
+
             <h3>Performance Summary:</h3>
             <p id="category-performance">Category: <span id="played-category">Phishing Awareness</span></p>
             <div class="progress-container">
                 <div class="progress-bar" id="category-progress" style="width:80%">80%</div>
             </div>
-            
+
             <p>Questions by Difficulty:</p>
             <p>Easy: <span id="easy-stats">3/3</span></p>
             <p>Medium: <span id="medium-stats">2/3</span></p>
             <p>Hard: <span id="hard-stats">1/3</span></p>
         </div>
-        
+
         <div style="text-align: left; margin: 20px 0;">
             <h3>Recommendations:</h3>
             <div id="recommendations">
                 <!-- Recommendations will be populated dynamically -->
             </div>
         </div>
-        
+
         <div class="button-group">
             <button onclick="switchScreen('game-selection')">Play Again</button>
             <button onclick="switchScreen('leaderboard')">View Leaderboard</button>
@@ -842,7 +886,7 @@
 
     <!-- Socket.io library -->
     <script src="/socket.io/socket.io.js"></script>
-    
+
     <script>
         // Initialize socket connection
         const socket = io();
@@ -862,22 +906,22 @@
         let onlinePlayers = [];
 
         // On document ready
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Setup event listeners
             setupEventListeners();
-            
+
             // Socket event handlers
             setupSocketHandlers();
-            
+
             // Simulating splash screen loading
             simulateSplashScreenLoading();
-            
+
             // Set up password strength meter
             document.getElementById('create-password').addEventListener('input', checkPasswordStrength);
-            
+
             // Initialize multiplayer features
             initMultiplayer();
-            
+
             // Set up achievements
             setupAchievements();
         });
@@ -888,25 +932,25 @@
             socket.on('registrationResponse', (response) => {
                 if (response.success) {
                     currentUser = response.user;
-                    
+
                     // Show success message
                     const successMessage = document.getElementById('create-success-message');
                     successMessage.textContent = 'Account created successfully!';
                     successMessage.style.display = 'block';
-                    
+
                     // Clear form
                     document.getElementById('create-username').value = '';
                     document.getElementById('create-email').value = '';
                     document.getElementById('create-password').value = '';
-                    
+
                     // Reset password strength
                     document.getElementById('create-password-strength').style.width = '0%';
                     document.querySelectorAll('#requirements-list li').forEach(li => {
                         li.className = 'unmet';
                     });
-                    
+
                     // Redirect to login after a delay
-                    setTimeout(function() {
+                    setTimeout(function () {
                         switchScreen('login-register');
                     }, 2000);
                 } else {
@@ -914,19 +958,19 @@
                     document.getElementById('create-username-error').textContent = response.message;
                 }
             });
-            
+
             // Handle login response
             socket.on('loginResponse', (response) => {
                 if (response.success) {
                     currentUser = response.user;
-                    
+
                     // Update welcome message
-                    document.getElementById('welcome-message').textContent = 
+                    document.getElementById('welcome-message').textContent =
                         `Welcome, ${currentUser.username}! Test your knowledge about cybersecurity threats and protections.`;
-                    
+
                     // Update profile page
                     updateProfilePage();
-                    
+
                     // Switch to main menu
                     switchScreen('main-menu');
                 } else {
@@ -934,63 +978,65 @@
                     document.getElementById('login-error').textContent = response.message || 'Invalid username or password';
                 }
             });
-            
+
             // Handle player update (online players)
             socket.on('playerUpdate', (data) => {
                 onlinePlayers = data.players;
                 // You could display online players in a sidebar or in the main menu
                 console.log('Online players:', onlinePlayers);
             });
-            
+
             // Handle leaderboard update
             socket.on('leaderboardUpdated', (data) => {
                 updateLeaderboardDisplay(data.leaderboard);
             });
-            
+
             // Handle leaderboard data
             socket.on('leaderboardData', (data) => {
                 updateLeaderboardDisplay(data.leaderboard);
             });
-            
+
             // Handle user data update
             socket.on('userUpdated', (data) => {
-               // Update the current user object with new data
-               currentUser = {...currentUser, ...data.user};
-    
-               // Update the profile if currently viewing it
-              if (document.getElementById('user-profile').classList.contains('active')) {
-                  updateProfilePage();
-              }
+                // Update the current user object with new data
+                currentUser = { ...currentUser, ...data.user };
+
+                // Update the profile if currently viewing it
+                if (document.getElementById('user-profile').classList.contains('active')) {
+                    updateProfilePage();
+                }
             });
-            
+
             // Handle question data
             socket.on('questionsData', (data) => {
-                console.log("Received questions from server:", data);
-    
-                if (data.questions && data.questions.length > 0) {
-                    currentQuestions = data.questions;
-        
-                    // Re-enable answer options
-                    document.querySelectorAll('.answer-option').forEach(option => {
-                        option.style.pointerEvents = "auto";
-                    });
-        
-                    // Start with the first question
-                    loadQuestion(0);
-                } else {
-                    // Handle case where no questions were returned
-                    document.getElementById('question-text').textContent = 
-                        "No questions available for this category. Please try another category.";
-        
-                    // Add a back button
-                    const feedbackDiv = document.getElementById('answer-feedback');
-                    feedbackDiv.style.display = 'block';
-                    feedbackDiv.style.backgroundColor = '#ffebee';
-                    feedbackDiv.innerHTML = 
-                       'No questions found. <button onclick="switchScreen(\'game-selection\')">Back to Categories</button>';
-               }
+    console.log("Received questions from server:", data);
+
+    if (data.questions && data.questions.length > 0) {
+        // Randomize the questions array
+        currentQuestions = shuffleArray([...data.questions]);
+        console.log("Questions randomized:", currentQuestions);
+
+        // Re-enable answer options
+        document.querySelectorAll('.answer-option').forEach(option => {
+            option.style.pointerEvents = "auto";
+        });
+
+        // Start with the first question
+        loadQuestion(0);
+    } else {
+        // Handle case where no questions were returned
+        document.getElementById('question-text').textContent =
+            "No questions available for this category. Please try another category.";
+
+        // Add a back button
+        const feedbackDiv = document.getElementById('answer-feedback');
+        feedbackDiv.style.display = 'block';
+        feedbackDiv.style.backgroundColor = '#ffebee';
+        feedbackDiv.innerHTML =
+            'No questions found. <button onclick="switchScreen(\'game-selection\')">Back to Categories</button>';
+                }
             });
-            
+
             // Handle question error
             socket.on('questionsError', (data) => {
                 alert('Error loading questions: ' + data.message);
@@ -1001,16 +1047,16 @@
         // Setup event listeners
         function setupEventListeners() {
             // Create account button event
-            document.getElementById('create-account-submit').addEventListener('click', function() {
+            document.getElementById('create-account-submit').addEventListener('click', function () {
                 const username = document.getElementById('create-username').value;
                 const email = document.getElementById('create-email').value;
                 const password = document.getElementById('create-password').value;
-                
+
                 if (!username || !email || !password) {
                     document.getElementById('create-username-error').textContent = 'All fields are required';
                     return;
                 }
-                
+
                 // Send registration request to server
                 socket.emit('registerUser', {
                     username: username,
@@ -1018,32 +1064,32 @@
                     password: password
                 });
             });
-            
+
             // Login button event
-            document.getElementById('login-button').addEventListener('click', function() {
+            document.getElementById('login-button').addEventListener('click', function () {
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
-                
+
                 if (!username || !password) {
                     document.getElementById('login-error').textContent = 'Username and password are required';
                     return;
                 }
-                
+
                 // Send login request to server
                 socket.emit('login', {
                     username: username,
                     password: password
                 });
             });
-            
+
             // Guest login button
             document.getElementById('guest-play').addEventListener('click', loginAsGuest);
-            
+
             // Password input for login - strength meter
-            document.getElementById('password').addEventListener('input', function() {
+            document.getElementById('password').addEventListener('input', function () {
                 const password = this.value;
                 const strengthIndicator = document.getElementById('password-strength-indicator');
-                
+
                 // Simple strength calculation for login screen
                 let strength = 0;
                 if (password.length > 5) strength += 20;
@@ -1051,9 +1097,9 @@
                 if (/[A-Z]/.test(password)) strength += 20;
                 if (/[0-9]/.test(password)) strength += 20;
                 if (/[^A-Za-z0-9]/.test(password)) strength += 20;
-                
+
                 strengthIndicator.style.width = strength + '%';
-                
+
                 if (strength < 40) {
                     strengthIndicator.style.backgroundColor = '#F44336';
                 } else if (strength < 80) {
@@ -1062,11 +1108,11 @@
                     strengthIndicator.style.backgroundColor = '#4CAF50';
                 }
             });
-            
+
             // Logout functionality
             const logoutButtons = document.querySelectorAll('[data-action="logout"]');
             logoutButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     // Send logout request to server
                     socket.emit('logout');
                     currentUser = null;
@@ -1078,14 +1124,14 @@
         // Simulate splash screen loading
         function simulateSplashScreenLoading() {
             let progress = 0;
-            const interval = setInterval(function() {
+            const interval = setInterval(function () {
                 progress += 10;
                 document.getElementById('loading-progress').style.width = progress + '%';
                 document.getElementById('loading-progress').innerText = progress + '%';
-                
+
                 if (progress >= 100) {
                     clearInterval(interval);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         switchScreen('login-register');
                     }, 500);
                 }
@@ -1094,39 +1140,39 @@
 
         // Switch between screens
         function switchScreen(screenId) {
-           // Hide all screens
+            // Hide all screens
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
-    
+
             // Show the selected screen
             document.getElementById(screenId).classList.add('active');
-    
+
             // Update current screen display - with null check
             const screenTitleElement = document.querySelector(`#${screenId} .screen-title`);
             if (screenTitleElement) {
                 document.getElementById('current-screen').textContent = screenTitleElement.textContent;
             } else {
                 // Fallback to a formatted version of the screen ID if no title element is found
-                document.getElementById('current-screen').textContent = 
+                document.getElementById('current-screen').textContent =
                     screenId.charAt(0).toUpperCase() + screenId.slice(1).replace(/-/g, ' ');
             }
-    
-           // Special screen handling
-           if (screenId === 'game-play') {
-               startGameTimer();
-           } else if (screenId === 'leaderboard') {
-               // Request latest leaderboard data
-               socket.emit('getLeaderboard');
-           }  else if (screenId === 'user-profile') {
-              // Update profile information when viewing profile
-              updateProfilePage();
+
+            // Special screen handling
+            if (screenId === 'game-play') {
+                startGameTimer();
+            } else if (screenId === 'leaderboard') {
+                // Request latest leaderboard data
+                socket.emit('getLeaderboard');
+            } else if (screenId === 'user-profile') {
+                // Update profile information when viewing profile
+                updateProfilePage();
             } else {
-               // If leaving game play, clear the timer
-               if (gameTimer) {
-                   clearInterval(gameTimer);
-               }
-           }
+                // If leaving game play, clear the timer
+                if (gameTimer) {
+                    clearInterval(gameTimer);
+                }
+            }
         }
 
         // Login as guest
@@ -1137,42 +1183,42 @@
         // Update leaderboard display
         function updateLeaderboardDisplay(leaderboard) {
             const leaderboardTable = document.querySelector('.leaderboard-table tbody');
-            
+
             // Clear existing rows
             leaderboardTable.innerHTML = '';
-            
+
             // Add new rows
             leaderboard.forEach((entry, index) => {
                 const row = document.createElement('tr');
-                
+
                 const rankCell = document.createElement('td');
                 const playerCell = document.createElement('td');
                 const scoreCell = document.createElement('td');
                 const dateCell = document.createElement('td');
-                
+
                 rankCell.textContent = index + 1;
                 playerCell.textContent = entry.username;
                 scoreCell.textContent = entry.score;
                 dateCell.textContent = new Date(entry.date).toLocaleDateString();
-                
+
                 row.appendChild(rankCell);
                 row.appendChild(playerCell);
                 row.appendChild(scoreCell);
                 row.appendChild(dateCell);
-                
+
                 // Highlight current user
                 if (currentUser && entry.username === currentUser.username) {
                     row.style.backgroundColor = '#e8f5e9';
                 }
-                
+
                 leaderboardTable.appendChild(row);
             });
-            
+
             // Update personal rank info
             if (currentUser) {
                 const userRank = leaderboard.findIndex(entry => entry.username === currentUser.username);
                 const rankText = document.querySelector('#user-rank');
-                
+
                 if (userRank !== -1) {
                     rankText.innerHTML = `#${userRank + 1} (Score: ${leaderboard[userRank].score})`;
                 } else {
@@ -1184,28 +1230,28 @@
         // Update profile page with user data
         function updateProfilePage() {
             if (!currentUser) return;
-            
+
             document.getElementById('profile-username').textContent = currentUser.username;
             document.getElementById('profile-join-date').textContent = new Date(currentUser.registrationDate).toLocaleDateString();
             document.getElementById('profile-games-played').textContent = currentUser.gamesPlayed || 0;
             document.getElementById('profile-high-score').textContent = currentUser.highscore || 0;
-            
+
             // Update category progress bars
             const phishingBar = document.getElementById('profile-phishing-progress');
             const socialBar = document.getElementById('profile-social-progress');
             const mobileBar = document.getElementById('profile-mobile-progress');
-            
+
             if (currentUser.categoryProgress) {
                 const phishingProgress = currentUser.categoryProgress.phishing || 0;
                 const socialProgress = currentUser.categoryProgress.social || 0;
                 const mobileProgress = currentUser.categoryProgress.mobile || 0;
-                
+
                 phishingBar.style.width = phishingProgress + '%';
                 phishingBar.textContent = phishingProgress + '%';
-                
+
                 socialBar.style.width = socialProgress + '%';
                 socialBar.textContent = socialProgress + '%';
-                
+
                 mobileBar.style.width = mobileProgress + '%';
                 mobileBar.textContent = mobileProgress + '%';
             }
@@ -1216,7 +1262,7 @@
             const password = document.getElementById('create-password').value;
             const strengthIndicator = document.getElementById('create-password-strength');
             const createButton = document.getElementById('create-account-submit');
-            
+
             // Check requirements
             const requirements = {
                 length: password.length >= 10,
@@ -1225,25 +1271,25 @@
                 number: /[0-9]/.test(password),
                 special: /[^A-Za-z0-9]/.test(password)
             };
-            
+
             // Update requirement list
             document.getElementById('req-length').className = requirements.length ? 'met' : 'unmet';
             document.getElementById('req-uppercase').className = requirements.uppercase ? 'met' : 'unmet';
             document.getElementById('req-lowercase').className = requirements.lowercase ? 'met' : 'unmet';
             document.getElementById('req-number').className = requirements.number ? 'met' : 'unmet';
             document.getElementById('req-special').className = requirements.special ? 'met' : 'unmet';
-            
+
             // Calculate strength percentage
             let strengthPoints = 0;
             Object.values(requirements).forEach(req => {
                 if (req) strengthPoints++;
             });
-            
+
             const strengthPercentage = (strengthPoints / 5) * 100;
-            
+
             // Update strength indicator
             strengthIndicator.style.width = strengthPercentage + '%';
-            
+
             // Set color based on strength
             if (strengthPercentage < 40) {
                 strengthIndicator.style.backgroundColor = '#F44336'; // Red
@@ -1252,7 +1298,7 @@
             } else {
                 strengthIndicator.style.backgroundColor = '#4CAF50'; // Green
             }
-            
+
             // Enable or disable create button
             createButton.disabled = strengthPercentage < 100;
         }
@@ -1260,10 +1306,10 @@
         // Start game with selected category
         function startGame(category) {
             currentCategory = category;
-            document.getElementById('game-play-title').textContent = 
-            category.charAt(0).toUpperCase() + category.slice(1) + ' Security Quiz';
-    
-        // Reset game stats
+            document.getElementById('game-play-title').textContent =
+                category.charAt(0).toUpperCase() + category.slice(1) + ' Security Quiz';
+
+            // Reset game stats
             currentScore = 0;
             timeRemaining = 60;
             currentQuestion = 0;
@@ -1274,20 +1320,20 @@
             easyTotal = 0;
             mediumTotal = 0;
             hardTotal = 0;
-    
+
             // Update score display
             document.getElementById('current-score').textContent = currentScore;
-    
+
             // Show loading message
             document.getElementById('question-text').textContent = "Loading questions...";
             document.querySelectorAll('.answer-option').forEach(option => {
-              option.textContent = "Loading...";
-              option.style.pointerEvents = "none"; // Disable clicking
+                option.textContent = "Loading...";
+                option.style.pointerEvents = "none"; // Disable clicking
             });
-    
+
             // Switch to game screen
             switchScreen('game-play');
-    
+
             // Request questions from server
             console.log("Requesting questions for category:", category);
             socket.emit('getQuestions', { category: category });
@@ -1299,56 +1345,56 @@
                 console.error("No questions available");
                 return;
             }
-    
+
             if (index < currentQuestions.length) {
                 const question = currentQuestions[index];
-        
+
                 // Reset option classes
                 document.querySelectorAll('.answer-option').forEach(option => {
                     option.className = 'answer-option';
                 });
-        
+
                 // Hide feedback and next button
                 document.getElementById('answer-feedback').style.display = 'none';
                 document.getElementById('next-question').style.display = 'none';
-        
+
                 // Set question text
                 document.getElementById('question-number').textContent = index + 1;
                 document.getElementById('question-text').textContent = question.QuestionText;
-        
+
                 // Get the answers for this question
                 const answers = question.answers;
-        
+
                 if (!answers || answers.length < 4) {
                     console.error("Not enough answers for question:", question);
                     document.getElementById('answer-feedback').style.display = 'block';
                     document.getElementById('answer-feedback').style.backgroundColor = '#ffebee';
-                    document.getElementById('answer-feedback').textContent = 
+                    document.getElementById('answer-feedback').textContent =
                         "Error: This question doesn't have enough answer options.";
                     return;
                 }
-        
+
                 // Map answers to options a, b, c, d
                 const optionMap = ['a', 'b', 'c', 'd'];
-        
+
                 // Set options
                 answers.forEach((answer, i) => {
                     if (i < 4) {
                         const option = optionMap[i];
-                        document.getElementById('option-' + option).textContent = 
+                        document.getElementById('option-' + option).textContent =
                             option.toUpperCase() + '. ' + answer.AnswerText;
-                
-                    // Store the correct answer
-                    if (answer.isCorrect) {
-                        question.correctAnswer = option;
+
+                        // Store the correct answer
+                        if (answer.isCorrect) {
+                            question.correctAnswer = option;
+                        }
                     }
-                }
-            });
-        
+                });
+
                 // Update difficulty indicator
                 updateDifficultyIndicator(question.Difficulty);
-        
-               // Track difficulty totals
+
+                // Track difficulty totals
                 if (question.Difficulty === 'easy') easyTotal++;
                 if (question.Difficulty === 'medium') mediumTotal++;
                 if (question.Difficulty === 'hard') hardTotal++;
@@ -1363,12 +1409,12 @@
             const dot1 = document.getElementById('diff-1');
             const dot2 = document.getElementById('diff-2');
             const dot3 = document.getElementById('diff-3');
-            
+
             // Reset all dots
             dot1.className = 'difficulty-dot';
             dot2.className = 'difficulty-dot';
             dot3.className = 'difficulty-dot';
-            
+
             // Set active dots based on difficulty
             if (difficulty === 'easy') {
                 dot1.className = 'difficulty-dot active';
@@ -1391,33 +1437,33 @@
             if (document.getElementById('answer-feedback').style.display !== 'none') {
                 return;
             }
-            
+
             const question = currentQuestions[currentQuestion];
             const selectedOption = document.getElementById('option-' + option);
             const feedback = document.getElementById('answer-feedback');
-            
+
             // Show the correct answer
             document.getElementById('option-' + question.correctAnswer).classList.add('correct');
-            
+
             if (option === question.correctAnswer) {
                 // Correct answer
                 selectedOption.classList.add('correct');
                 feedback.style.backgroundColor = '#e8f5e9';
-                
+
                 // Find the explanation text (use the correct answer's text as explanation for now)
                 const explanation = "Correct! That's the right answer.";
                 feedback.textContent = explanation;
-                
+
                 // Award points based on difficulty
                 let points = 10;
                 if (question.Difficulty === 'medium') points = 20;
                 if (question.Difficulty === 'hard') points = 30;
-                
+
                 currentScore += points;
                 document.getElementById('current-score').textContent = currentScore;
-                
+
                 correctAnswers++;
-                
+
                 // Track difficulty stats
                 if (question.Difficulty === 'easy') easyCorrect++;
                 if (question.Difficulty === 'medium') mediumCorrect++;
@@ -1426,12 +1472,12 @@
                 // Incorrect answer
                 selectedOption.classList.add('incorrect');
                 feedback.style.backgroundColor = '#ffebee';
-                
+
                 // Find the explanation text
                 const explanation = "Incorrect. Please try again.";
                 feedback.textContent = explanation;
             }
-            
+
             // Show feedback and next button
             feedback.style.display = 'block';
             document.getElementById('next-question').style.display = 'block';
@@ -1448,17 +1494,17 @@
             // Reset timer
             timeRemaining = 60;
             document.getElementById('time-remaining').textContent = timeRemaining;
-            
+
             // Clear any existing timer
             if (gameTimer) {
                 clearInterval(gameTimer);
             }
-            
+
             // Set up new timer
-            gameTimer = setInterval(function() {
+            gameTimer = setInterval(function () {
                 timeRemaining--;
                 document.getElementById('time-remaining').textContent = timeRemaining;
-                
+
                 if (timeRemaining <= 0) {
                     clearInterval(gameTimer);
                     endGame();
@@ -1471,73 +1517,73 @@
             // Clear timer
             if (gameTimer) {
                 clearInterval(gameTimer);
-             }
-    
+            }
+
             // Apply time bonus if there's remaining time
             if (timeRemaining > 0) {
                 // Calculate time bonus - multiply score by a factor based on remaining time
                 const timeBonusFactor = 1 + (timeRemaining / 60);
-        
+
                 // Apply the bonus
                 const originalScore = currentScore;
                 currentScore = Math.round(originalScore * timeBonusFactor);
-        
+
                 console.log(`Time bonus applied: ${originalScore} × ${timeBonusFactor.toFixed(2)} = ${currentScore}`);
             }
-    
+
             // Calculate percentage of correct answers
             const percentage = Math.round((correctAnswers / currentQuestions.length) * 100);
-    
+
             // Update results screen
             document.getElementById('final-score').textContent = currentScore;
             document.getElementById('correct-answers').textContent = correctAnswers + '/' + currentQuestions.length;
             document.getElementById('correct-percentage').textContent = percentage;
             document.getElementById('category-progress').style.width = percentage + '%';
             document.getElementById('category-progress').textContent = percentage + '%';
-    
-            document.getElementById('played-category').textContent = 
+
+            document.getElementById('played-category').textContent =
                 currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1) + ' Security';
-    
+
             // Update difficulty stats
             document.getElementById('easy-stats').textContent = easyCorrect + '/' + easyTotal;
             document.getElementById('medium-stats').textContent = mediumCorrect + '/' + mediumTotal;
             document.getElementById('hard-stats').textContent = hardCorrect + '/' + hardTotal;
-    
+
             // Add time bonus information to recommendations
             if (timeRemaining > 0) {
                 const bonusMessage = document.createElement('p');
-                bonusMessage.innerHTML = `<strong>Time Bonus!</strong> You completed the quiz with ${timeRemaining} seconds remaining, earning a ${((timeRemaining/60)*100).toFixed(0)}% score bonus!`;
+                bonusMessage.innerHTML = `<strong>Time Bonus!</strong> You completed the quiz with ${timeRemaining} seconds remaining, earning a ${((timeRemaining / 60) * 100).toFixed(0)}% score bonus!`;
                 bonusMessage.style.color = '#4CAF50';
-               document.getElementById('recommendations').prepend(bonusMessage);
+                document.getElementById('recommendations').prepend(bonusMessage);
             }
-    
+
             // Generate personalized recommendations
             generateRecommendations();
-    
+
             // Send game results to server
             if (currentUser && !currentUser.isGuest) {
                 socket.emit('gameCompleted', {
-                category: currentCategory,
-                score: currentScore,
-                correctAnswers: correctAnswers,
-                totalQuestions: currentQuestions.length,
-                progressPercent: percentage,
-                difficulty: {
-                    easy: { correct: easyCorrect, total: easyTotal },
-                    medium: { correct: mediumCorrect, total: mediumTotal },
-                    hard: { correct: hardCorrect, total: hardTotal }
+                    category: currentCategory,
+                    score: currentScore,
+                    correctAnswers: correctAnswers,
+                    totalQuestions: currentQuestions.length,
+                    progressPercent: percentage,
+                    difficulty: {
+                        easy: { correct: easyCorrect, total: easyTotal },
+                        medium: { correct: mediumCorrect, total: mediumTotal },
+                        hard: { correct: hardCorrect, total: hardTotal }
+                    }
+                });
+
+                // Update local user data if new score is higher
+                if (currentScore > (currentUser.highscore || 0)) {
+                    currentUser.highscore = currentScore;
                 }
-            });
-        
-            // Update local user data if new score is higher
-            if (currentScore > (currentUser.highscore || 0)) {
-                currentUser.highscore = currentScore;
+
+                // Update profile page in case user navigates there
+                updateProfilePage();
             }
-        
-               // Update profile page in case user navigates there
-               updateProfilePage();
-            }
-    
+
             // Switch to results screen
             switchScreen('game-results');
         }
@@ -1546,25 +1592,25 @@
         function generateRecommendations() {
             const recommendationsDiv = document.getElementById('recommendations');
             recommendationsDiv.innerHTML = '';
-            
+
             const recommendations = [];
-            
+
             if (easyCorrect < easyTotal) {
                 recommendations.push('• Review basic ' + currentCategory + ' security concepts');
             }
-            
+
             if (mediumCorrect < mediumTotal) {
                 recommendations.push('• Practice identifying more complex ' + currentCategory + ' security threats');
             }
-            
+
             if (hardCorrect < hardTotal) {
                 recommendations.push('• Learn advanced techniques for ' + currentCategory + ' attack prevention');
             }
-            
+
             // Add some generic recommendations
             recommendations.push('• Try our other security categories to improve your overall awareness');
             recommendations.push('• Consider setting up two-factor authentication for your important accounts');
-            
+
             // Add recommendations to the div
             recommendations.forEach(rec => {
                 const p = document.createElement('p');
@@ -1592,29 +1638,29 @@
                 <h3>Online Players</h3>
                 <ul id="player-list"></ul>
             `;
-            
+
             // Add to main menu
             const mainMenu = document.getElementById('main-menu');
             mainMenu.appendChild(playerListContainer);
-            
+
             // Update player list when it changes
             socket.on('playerUpdate', (data) => {
                 const playerList = document.getElementById('player-list');
                 playerList.innerHTML = '';
-                
+
                 data.players.forEach(player => {
                     const li = document.createElement('li');
                     li.textContent = player;
-                    
+
                     // Highlight current user
                     if (currentUser && player === currentUser.username) {
                         li.className = 'current-user';
                     }
-                    
+
                     playerList.appendChild(li);
                 });
             });
-            
+
             // Add challenge functionality
             socket.on('challengeRequest', (data) => {
                 if (confirm(`${data.challenger} has challenged you to a ${data.category} quiz! Accept?`)) {
@@ -1624,7 +1670,7 @@
                     socket.emit('declineChallenge', { challenger: data.challenger });
                 }
             });
-            
+
             // Add chat functionality
             const chatContainer = document.createElement('div');
             chatContainer.id = 'chat-container';
@@ -1637,12 +1683,12 @@
                     <button id="send-chat">Send</button>
                 </div>
             `;
-            
+
             // Add to main menu
             mainMenu.appendChild(chatContainer);
-            
-            // Handle chat messages
-            document.getElementById('send-chat').addEventListener('click', function() {
+
+            // Handle chat send button
+            document.getElementById('send-chat').addEventListener('click', function () {
                 const message = document.getElementById('chat-input').value.trim();
                 if (message && currentUser) {
                     socket.emit('chatMessage', {
@@ -1652,38 +1698,38 @@
                     document.getElementById('chat-input').value = '';
                 }
             });
-            
-            // Enter key for chat
-            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+
+            // Handle pressing Enter in chat input
+            document.getElementById('chat-input').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     document.getElementById('send-chat').click();
                 }
             });
-            
+
             // Receive chat messages
             socket.on('chatMessage', (data) => {
                 const chatMessages = document.getElementById('chat-messages');
                 const messageElement = document.createElement('div');
                 messageElement.className = 'chat-message';
-                
+
                 // Highlight current user's messages
                 if (currentUser && data.username === currentUser.username) {
                     messageElement.className += ' own-message';
                 }
-                
+
                 messageElement.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
                 chatMessages.appendChild(messageElement);
-                
+
                 // Auto-scroll to bottom
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             });
-            
+
             // Handle notification for new high scores
             socket.on('newHighScore', (data) => {
                 // Create a notification
                 showNotification(`${data.username} just set a new high score of ${data.score} in ${data.category}!`);
             });
-            
+
             // Show a challenge button next to each player in the list
             updatePlayerListWithChallengeButtons();
         }
@@ -1693,23 +1739,23 @@
             socket.on('playerUpdate', (data) => {
                 const playerList = document.getElementById('player-list');
                 playerList.innerHTML = '';
-                
+
                 data.players.forEach(player => {
                     if (currentUser && player !== currentUser.username) {
                         const li = document.createElement('li');
                         li.className = 'player-item';
-                        
+
                         const playerSpan = document.createElement('span');
                         playerSpan.textContent = player;
                         li.appendChild(playerSpan);
-                        
+
                         const challengeButton = document.createElement('button');
                         challengeButton.textContent = 'Challenge';
                         challengeButton.className = 'challenge-button';
-                        challengeButton.onclick = function() {
+                        challengeButton.onclick = function () {
                             showChallengeModal(player);
                         };
-                        
+
                         li.appendChild(challengeButton);
                         playerList.appendChild(li);
                     } else if (currentUser && player === currentUser.username) {
@@ -1742,17 +1788,17 @@
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
-            
+
             // Add event listeners
-            document.getElementById('cancel-challenge').addEventListener('click', function() {
+            document.getElementById('cancel-challenge').addEventListener('click', function () {
                 document.body.removeChild(modal);
             });
-            
+
             const categoryButtons = modal.querySelectorAll('.category-button');
             categoryButtons.forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const category = this.getAttribute('data-category');
                     socket.emit('challengePlayer', {
                         target: player,
@@ -1769,14 +1815,14 @@
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.textContent = message;
-            
+
             document.body.appendChild(notification);
-            
+
             // Fade in
             setTimeout(() => {
                 notification.className = 'notification show';
             }, 10);
-            
+
             // Remove after 5 seconds
             setTimeout(() => {
                 notification.className = 'notification';
@@ -1827,62 +1873,62 @@
                     icon: '⏱️'
                 }
             ];
-            
+
             // Check achievements after game completion
             socket.on('gameCompleted', (data) => {
                 checkAchievements(data);
             });
-            
+
             // Check if player earned any achievements
             function checkAchievements(gameData) {
                 const earnedAchievements = [];
-                
+
                 // Check first game achievement
                 if (currentUser && currentUser.gamesPlayed === 1) {
                     earnedAchievements.push('first_game');
                 }
-                
+
                 // Check perfect score achievement
                 if (gameData.correctAnswers === gameData.totalQuestions) {
                     earnedAchievements.push('perfect_score');
                 }
-                
+
                 // Check category-specific achievements
                 if (gameData.category === 'social' && gameData.progressPercent >= 90) {
                     earnedAchievements.push('social_master');
                 }
-                
+
                 if (gameData.category === 'mobile' && gameData.progressPercent >= 90) {
                     earnedAchievements.push('mobile_guardian');
                 }
-                
+
                 if (gameData.category === 'phishing' && gameData.progressPercent >= 90) {
                     earnedAchievements.push('phishing_detector');
                 }
-                
+
                 // Check speed achievement
                 if (timeRemaining >= 30) {
                     earnedAchievements.push('speed_demon');
                 }
-                
+
                 // Display earned achievements
                 if (earnedAchievements.length > 0) {
                     showAchievementPopup(earnedAchievements);
-                    
+
                     // Send earned achievements to server
                     socket.emit('achievementsEarned', {
                         achievements: earnedAchievements
                     });
                 }
             }
-            
+
             // Show achievement popup
             function showAchievementPopup(achievementIds) {
                 const popup = document.createElement('div');
                 popup.className = 'achievement-popup';
-                
+
                 let popupContent = '<h3>Achievement Unlocked!</h3>';
-                
+
                 achievementIds.forEach(id => {
                     const achievement = achievements.find(a => a.id === id);
                     if (achievement) {
@@ -1897,21 +1943,21 @@
                         `;
                     }
                 });
-                
+
                 popup.innerHTML = `
                     <div class="achievement-popup-content">
                         ${popupContent}
                         <button id="close-achievement">OK</button>
                     </div>
                 `;
-                
+
                 document.body.appendChild(popup);
-                
+
                 // Add close button event
-                document.getElementById('close-achievement').addEventListener('click', function() {
+                document.getElementById('close-achievement').addEventListener('click', function () {
                     document.body.removeChild(popup);
                 });
-                
+
                 // Auto close after 5 seconds
                 setTimeout(() => {
                     if (document.body.contains(popup)) {
@@ -1923,22 +1969,48 @@
 
         // Initialize multiplayer features
         function initMultiplayer() {
-            setupMultiplayerFeatures();
+    // Add player list to main menu
+    const playerListContainer = document.createElement('div');
+    playerListContainer.id = 'online-players';
+    playerListContainer.className = 'online-players-container';
+    playerListContainer.innerHTML = `
+        <h3>Online Players</h3>
+        <ul id="player-list"></ul>
+    `;
+    
+    const mainMenu = document.getElementById('main-menu');
+    mainMenu.appendChild(playerListContainer);
+    
+    // Update player list when it changes
+    socket.on('playerUpdate', (data) => {
+        const playerList = document.getElementById('player-list');
+        playerList.innerHTML = '';
+        
+        data.players.forEach(player => {
+            const li = document.createElement('li');
             
-            // Handle server events for multiplayer
-            socket.on('gameStarted', (data) => {
-                if (data.players.includes(currentUser.username)) {
-                    // This user is part of the match
-                    startGame(data.category);
-                }
-            });
+            // Highlight current user
+            if (currentUser && player === currentUser.username) {
+                li.className = 'current-user';
+                li.textContent = player + ' (You)';
+            } else {
+                li.textContent = player;
+            }
             
-            // Handle spectator mode
-            socket.on('spectateGame', (data) => {
-                // Implement spectator functionality here
-                console.log('Spectating game:', data);
-            });
+            playerList.appendChild(li);
+        });
+    });
+    
+    // Handle socket events for multiplayer
+    socket.on('gameStarted', (data) => {
+        if (data.players.includes(currentUser.username)) {
+            // This user is part of the match
+            startGame(data.category);
         }
+    });
+}
     </script>
+    <script src="/chat.js"></script>
 </body>
+
 </html>
