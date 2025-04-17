@@ -960,6 +960,7 @@
             });
 
             // Handle login response
+            // Handle login response
             socket.on('loginResponse', (response) => {
                 if (response.success) {
                     currentUser = response.user;
@@ -975,8 +976,28 @@
                     switchScreen('main-menu');
                 } else {
                     // Show error message
-                    document.getElementById('login-error').textContent = response.message || 'Invalid username or password';
-                }
+                    const loginError = document.getElementById('login-error');
+                    const loginButton = document.getElementById('login-button');
+                    loginError.textContent = response.message || 'Invalid username or password';
+        
+                    // If the account is locked, start a countdown timer
+                    if (response.lockTimeRemaining) {
+                        // Disable the login button during lockout
+                        loginButton.disabled = true;
+            
+                        let timeRemaining = response.lockTimeRemaining;
+                        const countdownInterval = setInterval(() => {
+                            timeRemaining--;
+                            loginError.textContent = `Account locked. Try again in ${timeRemaining} seconds.`;
+                
+                            if (timeRemaining <= 0) {
+                                clearInterval(countdownInterval);
+                                loginButton.disabled = false;
+                                loginError.textContent = 'Account unlocked. You may try again.';
+                            }
+                        }, 1000);
+                    }
+               }
             });
 
             // Handle player update (online players)
