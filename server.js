@@ -401,6 +401,17 @@ io.on('connection', (socket) => {
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     }
   });
+
+   // Handle chat messages 
+   socket.on('chatMessage', (messageData) => {
+    // Broadcast the message to all connected clients
+    io.emit('chatMessage', {
+      username: messageData.username,
+      message: messageData.message,
+      timestamp: new Date().toISOString()
+    });
+  });
+
 });
 
 // Handle Guest Login
