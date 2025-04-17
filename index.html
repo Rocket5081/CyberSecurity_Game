@@ -1580,6 +1580,9 @@
                     currentUser.highscore = currentScore;
                 }
 
+                // Increment games played locally to show immediately
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+
                 // Update profile page in case user navigates there
                 updateProfilePage();
             }
