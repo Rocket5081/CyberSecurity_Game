@@ -67,7 +67,30 @@ async function registerUser(userData) {
   return { data: data[0] };
 }
 
+// Track failed login attempts and account lockouts
+const userLoginAttempts = {}; // Track failed login attempts by username
+const userLockoutTimes = {}; // Track locked accounts and their unlock times
+
 async function authenticateUser(username, password) {
+  // Check if account is locked
+  if (userLockoutTimes[username]) {
+    const unlockTime = userLockoutTimes[username];
+    const currentTime = Date.now();
+    
+    if (currentTime < unlockTime) {
+      // Account is still locked
+      const remainingSeconds = Math.ceil((unlockTime - currentTime) / 1000);
+      return { 
+        error: 'Account locked', 
+        lockTimeRemaining: remainingSeconds 
+      };
+    } else {
+      // Lock period expired, remove the lock
+      delete userLockoutTimes[username];
+      // Do NOT reset the attempt counter completely - this allows doubling to work correctly
+    }
+  }
+
   const hashedPassword = sha256(password);
   
   const { data, error } = await supabase
@@ -76,8 +99,38 @@ async function authenticateUser(username, password) {
     .eq('Username', username)
     .single();
 
-  if (error || !data) return { error: 'User not found' };
-  if (data.Password_hash !== hashedPassword) return { error: 'Invalid password' };
+  if (error || !data) {
+    // Don't increment attempt counter for non-existent users
+    return { error: 'User not found' };
+  }
+  
+  if (data.Password_hash !== hashedPassword) {
+    // Increment failed attempts counter
+    userLoginAttempts[username] = (userLoginAttempts[username] || 0) + 1;
+    console.log(`Failed login attempt ${userLoginAttempts[username]} for user ${username}`);
+    
+    // Check if we should lock the account
+    if (userLoginAttempts[username] >= 3) {
+      // Calculate lock duration: 30 seconds for first lock, doubling each time
+      const lockCount = Math.floor(userLoginAttempts[username] / 3);
+      const lockDuration = 30 * Math.pow(2, lockCount - 1) * 1000; // in milliseconds
+      
+      userLockoutTimes[username] = Date.now() + lockDuration;
+      
+      const lockTimeSeconds = Math.ceil(lockDuration / 1000);
+      console.log(`User ${username} locked for ${lockTimeSeconds} seconds after ${userLoginAttempts[username]} failed attempts.`);
+      
+      return { 
+        error: 'Account locked',
+        lockTimeRemaining: lockTimeSeconds 
+      };
+    }
+    
+    return { error: 'Invalid password', failedAttempts: userLoginAttempts[username] };
+  }
+
+  // Login successful, reset the failed attempts counter
+  userLoginAttempts[username] = 0;
 
   return { user: data };
 }
@@ -295,23 +348,32 @@ io.on('connection', (socket) => {
   // User Login
   socket.on('login', async (credentials) => {
     try {
-      const { user, error } = await authenticateUser(
+      const { user, error, lockTimeRemaining, failedAttempts } = await authenticateUser(
         credentials.username,
         credentials.password
       );
-  
+
       if (error) {
-        // Check if it's an invalid password error or user not found
-        const errorMessage = error === 'Invalid password' ? 
-          'Invalid password' : 'User not found';
-        
-        // Return error to the client instead of falling back to guest login
-        return socket.emit('loginResponse', {
-          success: false,
-          message: errorMessage
-        });
+        if (error === 'Account locked') {
+          return socket.emit('loginResponse', {
+            success: false,
+            message: `Account locked. Try again in ${lockTimeRemaining} seconds.`,
+            lockTimeRemaining: lockTimeRemaining
+          });
+        } else if (error === 'Invalid password') {
+          const attemptsLeft = 3 - (failedAttempts % 3);
+          return socket.emit('loginResponse', {
+            success: false,
+            message: `Invalid password. ${attemptsLeft} attempts remaining before timeout.`
+          });
+        } else {
+          return socket.emit('loginResponse', {
+            success: false,
+            message: error
+          });
+        }
       }
-  
+
       // Update game state
       gameState.players[socket.id] = {
         userId: user.UserID,
@@ -319,7 +381,7 @@ io.on('connection', (socket) => {
         online: true,
         isGuest: false
       };
-  
+
       socket.emit('loginResponse', {
         success: true,
         user: {
@@ -330,7 +392,7 @@ io.on('connection', (socket) => {
           registrationDate: user.RegistrationDate
         }
       });
-  
+
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     } catch (error) {
       console.error('Login error:', error);
