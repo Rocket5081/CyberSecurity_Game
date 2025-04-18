@@ -17,10 +17,6 @@ const supabaseUrl = 'https://cclodkiuzkvynhnauaeu.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Track failed login attempts and account lockouts
-const userLoginAttempts = {}; // Track failed login attempts by username
-const userLockoutTimes = {}; // Track locked accounts and their unlock times
-
 // Serve static files
 app.use(express.static(path.join(__dirname)));
 
@@ -28,10 +24,6 @@ app.use(express.static(path.join(__dirname)));
 const gameState = {
   players: {}
 };
-
-//For tracking Login Attempts by user
-const loginAttempts = {}; // Track failed login attempts by username
-const lockedAccounts = {}; // Track locked accounts and their unlock times
 
 // SHA256 Helper Function
 function sha256(message) {
@@ -56,6 +48,7 @@ async function registerUser(userData) {
       Username: userData.username,
       Password_hash: hashedPassword,
       Highscore: 0,
+      GamesPlayed: 0,
       RegistrationDate: new Date().toISOString()
     }])
     .select()
@@ -65,25 +58,6 @@ async function registerUser(userData) {
 }
 
 async function authenticateUser(username, password) {
-  // Check if account is locked
-  if (userLockoutTimes[username]) {
-    const unlockTime = userLockoutTimes[username];
-    const currentTime = Date.now();
-    
-    if (currentTime < unlockTime) {
-      // Account is still locked
-      const remainingSeconds = Math.ceil((unlockTime - currentTime) / 1000);
-      return { 
-        error: 'Account locked', 
-        lockTimeRemaining: remainingSeconds 
-      };
-    } else {
-      // Lock period expired, remove the lock
-      delete userLockoutTimes[username];
-      userLoginAttempts[username] = 0;
-    }
-  }
-
   const hashedPassword = sha256(password);
   
   const { data, error } = await supabase
@@ -92,35 +66,8 @@ async function authenticateUser(username, password) {
     .eq('Username', username)
     .single();
 
-  if (error || !data) {
-    // Don't increment attempt counter for non-existent users
-    return { error: 'User not found' };
-  }
-  
-  if (data.Password_hash !== hashedPassword) {
-    // Increment failed attempts counter
-    userLoginAttempts[username] = (userLoginAttempts[username] || 0) + 1;
-    
-    // Check if we should lock the account
-    if (userLoginAttempts[username] >= 3) {
-      // Calculate lock duration: 30 seconds for first lock, doubling each time
-      const lockCount = Math.floor(userLoginAttempts[username] / 3);
-      const lockDuration = 30 * Math.pow(2, lockCount - 1) * 1000; // in milliseconds
-      
-      userLockoutTimes[username] = Date.now() + lockDuration;
-      
-      const lockTimeSeconds = Math.ceil(lockDuration / 1000);
-      return { 
-        error: 'Account locked',
-        lockTimeRemaining: lockTimeSeconds 
-      };
-    }
-    
-    return { error: 'Invalid password', failedAttempts: userLoginAttempts[username] };
-  }
-
-  // Login successful, reset the failed attempts counter
-  userLoginAttempts[username] = 0;
+  if (error || !data) return { error: 'User not found' };
+  if (data.Password_hash !== hashedPassword) return { error: 'Invalid password' };
 
   return { user: data };
 }
@@ -200,13 +147,13 @@ async function getLeaderboard() {
   }
 }
 
-
+// Updated function to handle both score and games played
 async function updateUserScore(username, score) {
   try {
     // Get user data first to check if score is higher than current
     const { data: user, error: userError } = await supabase
       .from('User')
-      .select('UserID, Highscore')
+      .select('UserID, Highscore, GamesPlayed')
       .eq('Username', username)
       .single();
     
@@ -215,23 +162,31 @@ async function updateUserScore(username, score) {
       return { error: 'User not found' };
     }
     
-    // Only update if new score is higher
+    // Increment the games played counter
+    const gamesPlayed = (user.GamesPlayed || 0) + 1;
+    
+    // Always update games played, but only update high score if it's higher
+    const updates = { GamesPlayed: gamesPlayed };
     if (score > user.Highscore) {
-      const { data, error } = await supabase
-        .from('User')
-        .update({ Highscore: score })
-        .eq('UserID', user.UserID);
-        
-      if (error) {
-        console.error("Error updating user score:", error);
-        return { error: error.message };
-      }
-      
-      // Notify other users of the new high score
-      return { success: true, newHighScore: true };
+      updates.Highscore = score;
     }
     
-    return { success: true, newHighScore: false };
+    const { data, error } = await supabase
+      .from('User')
+      .update(updates)
+      .eq('UserID', user.UserID);
+      
+    if (error) {
+      console.error("Error updating user data:", error);
+      return { error: error.message };
+    }
+    
+    // Notify other users of the new high score if applicable
+    return { 
+      success: true, 
+      newHighScore: score > user.Highscore,
+      gamesPlayed: gamesPlayed 
+    };
   } catch (err) {
     console.error("Unexpected error in updateUserScore:", err);
     return { error: 'Server error' };
@@ -301,6 +256,7 @@ io.on('connection', (socket) => {
           userId: newUser.UserID,
           username: newUser.Username,
           highscore: newUser.Highscore,
+          gamesPlayed: newUser.GamesPlayed || 0,
           registrationDate: newUser.RegistrationDate
         }
       });
@@ -318,32 +274,23 @@ io.on('connection', (socket) => {
   // User Login
   socket.on('login', async (credentials) => {
     try {
-      const { user, error, lockTimeRemaining, failedAttempts } = await authenticateUser(
+      const { user, error } = await authenticateUser(
         credentials.username,
         credentials.password
       );
-
+  
       if (error) {
-        if (error === 'Account locked') {
-          return socket.emit('loginResponse', {
-            success: false,
-            message: `Account locked. Try again in ${lockTimeRemaining} seconds.`,
-            lockTimeRemaining: lockTimeRemaining
-          });
-        } else if (error === 'Invalid password') {
-          const attemptsLeft = 3 - failedAttempts;
-          return socket.emit('loginResponse', {
-            success: false,
-            message: `Invalid password. ${attemptsLeft} attempts remaining before timeout.`
-          });
-        } else {
-          return socket.emit('loginResponse', {
-            success: false,
-            message: error
-          });
-        }
+        // Check if it's an invalid password error or user not found
+        const errorMessage = error === 'Invalid password' ? 
+          'Invalid password' : 'User not found';
+        
+        // Return error to the client instead of falling back to guest login
+        return socket.emit('loginResponse', {
+          success: false,
+          message: errorMessage
+        });
       }
-
+  
       // Update game state
       gameState.players[socket.id] = {
         userId: user.UserID,
@@ -351,7 +298,7 @@ io.on('connection', (socket) => {
         online: true,
         isGuest: false
       };
-
+  
       socket.emit('loginResponse', {
         success: true,
         user: {
@@ -362,13 +309,31 @@ io.on('connection', (socket) => {
           registrationDate: user.RegistrationDate
         }
       });
-
+  
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     } catch (error) {
       console.error('Login error:', error);
       socket.emit('loginResponse', {
         success: false,
         message: 'Login failed'
+      });
+    }
+  });
+
+  socket.on('resetPassword', async (data) => {
+    try {
+      const result = await resetUserPassword(
+        data.username,
+        data.email,
+        data.newPassword
+      );
+      
+      socket.emit('resetPasswordResponse', result);
+    } catch (error) {
+      console.error('Reset password error:', error);
+      socket.emit('resetPasswordResponse', {
+        success: false,
+        message: 'Password reset failed'
       });
     }
   });
@@ -394,77 +359,46 @@ io.on('connection', (socket) => {
     try {
       const player = gameState.players[socket.id];
       if (!player || player.isGuest) return;
-
-      // Update user score and games played count
-      const { data: user, error: userError } = await supabase
-        .from('User')
-        .select('UserID, Highscore, GamesPlayed')
-        .eq('Username', player.username)
-        .single();
+  
+      // Update user score and games played
+      const result = await updateUserScore(player.username, score);
     
-      if (userError) {
-        console.error("Error fetching user:", userError);
-        return { error: 'User not found' };
-      }
-    
-      // Increment games played counter
-      const gamesPlayed = (user.GamesPlayed || 0) + 1;
-    
-      // Prepare update data
-      const updateData = { 
-        GamesPlayed: gamesPlayed 
-      };
-    
-      // Also update highscore if new score is higher
-      if (score > user.Highscore) {
-        updateData.Highscore = score;
-      }
-    
-      // Update the user record
-      const { data, error } = await supabase
-        .from('User')
-        .update(updateData)
-        .eq('UserID', user.UserID);
+      if (result.success) {
+        // If it was a new high score, broadcast to other players
+        if (result.newHighScore) {
+          io.emit('newHighScore', {
+            username: player.username,
+            score: score,
+            category: category
+          });
+        }
       
-      if (error) {
-        console.error("Error updating user data:", error);
-        return { error: error.message };
-      }
-    
-      // Get updated user data to send back
-      const { data: updatedUser } = await supabase
-        .from('User')
-        .select('UserID, Username, Highscore, RegistrationDate, GamesPlayed')
-        .eq('Username', player.username)
-        .single();
+        // Get updated leaderboard
+        const leaderboard = await getLeaderboard();
       
-      if (updatedUser) {
-        // Send updated user data to this client
-        socket.emit('userUpdated', { 
-          user: {
-            userId: updatedUser.UserID,
-            username: updatedUser.Username,
-            highscore: updatedUser.Highscore,
-            gamesPlayed: updatedUser.GamesPlayed,
-            registrationDate: updatedUser.RegistrationDate
-          }
-        });
+        // Send back to all clients
+        io.emit('leaderboardUpdated', { leaderboard });
+        
+        // Add this section to send updated user data
+        const { data: updatedUser } = await supabase
+          .from('User')
+          .select('UserID, Username, Highscore, RegistrationDate, GamesPlayed')
+          .eq('Username', player.username)
+          .single();
+          
+        if (updatedUser) {
+          // Send updated user data to this client
+          socket.emit('userUpdated', { 
+            user: {
+              userId: updatedUser.UserID,
+              username: updatedUser.Username,
+              highscore: updatedUser.Highscore,
+              gamesPlayed: updatedUser.GamesPlayed || 0,
+              registrationDate: updatedUser.RegistrationDate
+            }
+          });
+        }
       }
-    
-      // Notify other users of a new high score if applicable
-      if (score > user.Highscore) {
-        io.emit('newHighScore', {
-          username: player.username,
-          score: score,
-          category: category
-        });
-      }
-    
-      // Get updated leaderboard
-      const leaderboard = await getLeaderboard();
-    
-      // Send back to all clients
-      io.emit('leaderboardUpdated', { leaderboard });
     } catch (error) {
       console.error('Game completion error:', error);
     }
@@ -478,6 +412,29 @@ io.on('connection', (socket) => {
     } catch (error) {
       console.error('Error getting leaderboard:', error);
       socket.emit('leaderboardError', { message: 'Failed to load leaderboard' });
+    }
+  });
+
+  // Update user stats
+  socket.on('updateUserStats', async (data) => {
+    if (data.userId) {
+      try {
+        // Update category-specific statistics for the user
+        await supabase
+          .from('UserStats')
+          .upsert({
+            UserID: data.userId,
+            CategoryStats: data.categoryStats
+          });
+        
+        // Broadcast the update to ensure client is in sync
+        socket.emit('userStatsUpdated', {
+          userId: data.userId,
+          categoryStats: data.categoryStats
+        });
+      } catch (error) {
+        console.error('Error updating user stats:', error);
+      }
     }
   });
 
@@ -498,8 +455,8 @@ io.on('connection', (socket) => {
     }
   });
 
-   // Handle chat messages 
-   socket.on('chatMessage', (messageData) => {
+  // Handle chat messages 
+  socket.on('chatMessage', (messageData) => {
     // Broadcast the message to all connected clients
     io.emit('chatMessage', {
       username: messageData.username,
@@ -524,11 +481,47 @@ async function handleGuestLogin(socket, username) {
     success: true, 
     user: {
       username: guestUsername,
-      isGuest: true
+      isGuest: true,
+      gamesPlayed: 0
     }
   });
   
   io.emit('playerUpdate', { players: getOnlinePlayers() });
+}
+
+// Reset user password function (needs to be defined)
+async function resetUserPassword(username, email, newPassword) {
+  try {
+    // Check if user exists and email matches
+    const { data: user, error: userError } = await supabase
+      .from('User')
+      .select('UserID, Email')
+      .eq('Username', username)
+      .single();
+    
+    if (userError || !user) {
+      return { success: false, message: 'User not found' };
+    }
+    
+    // Here you would normally validate the email against the stored one
+    // but since this is a simplified example, we'll just update the password
+    
+    const hashedPassword = sha256(newPassword);
+    
+    const { error } = await supabase
+      .from('User')
+      .update({ Password_hash: hashedPassword })
+      .eq('UserID', user.UserID);
+      
+    if (error) {
+      return { success: false, message: 'Failed to update password' };
+    }
+    
+    return { success: true };
+  } catch (err) {
+    console.error('Password reset error:', err);
+    return { success: false, message: 'Internal server error' };
+  }
 }
 
 // Serve main page

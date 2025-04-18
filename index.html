@@ -39,6 +39,7 @@
             margin-bottom: 20px;
             font-weight: bold;
             text-align: center;
+            
         }
 
         /* Login/Register Specific Styles */
@@ -46,7 +47,7 @@
             font-size: 24px;
             margin-bottom: 10px;
             font-weight: bold;
-            text-align: left;
+            text-align: center;
         }
 
         .game-logo {
@@ -297,6 +298,13 @@
             text-align: center;
             line-height: 20px;
             color: white;
+        }
+
+        .stats-detail {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
 
         /* Status bar for navigation */
@@ -552,57 +560,57 @@
         }
 
         /* Chat specific styles */
-.chat-container {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+        .chat-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-#chat-messages {
-    height: 200px;
-    overflow-y: auto;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
 
-.chat-message {
-    margin-bottom: 8px;
-    padding: 5px;
-    border-radius: 4px;
-}
+        .chat-message {
+            margin-bottom: 8px;
+            padding: 5px;
+            border-radius: 4px;
+        }
 
-.own-message {
-    background-color: #e8f5e9;
-}
+        .own-message {
+            background-color: #e8f5e9;
+        }
 
-.chat-input-container {
-    display: flex;
-}
+        .chat-input-container {
+            display: flex;
+        }
 
-#chat-input {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px 0 0 4px;
-}
+        #chat-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
 
-#send-chat {
-    padding: 8px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-}
+        #send-chat {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
 
-#send-chat:hover {
-    background-color: #45a049;
-}
+        #send-chat:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -610,7 +618,9 @@
     <!-- Splash Page -->
     <div id="splash-page" class="screen active">
         <div class="screen-title">Cybersecurity Awareness Game</div>
-        <div class="game-logo" style="font-size: 40px; margin: 50px 0;">🔒</div>
+        <div class="game-logo" style="font-size: 40px; margin: 50px 0;">
+            <img src="CBS-logo.png" alt="Cybersecurity Game Logo" style="height: 190px;">
+        </div>
         <p>Loading game resources...</p>
         <div class="progress-container">
             <div class="progress-bar" id="loading-progress" style="width:0%">0%</div>
@@ -624,7 +634,7 @@
     <!-- Login/Register Screen -->
     <div id="login-register" class="screen">
         <div class="game-title">Cybersecurity Awareness Game</div>
-        <div class="game-logo">Game Logo</div>
+        <img src="CBS-logo.png" alt="Cybersecurity Game Logo" style="height: 120px;">
 
         <div class="login-form">
             <div class="form-group">
@@ -643,7 +653,6 @@
             </div>
 
             <div class="form-links">
-                <a id="forgot-password">Forgot Password</a>
                 <button id="login-button" style="margin-top: 10px; width: 100%;">Login</button>
             </div>
         </div>
@@ -660,7 +669,6 @@
     <div id="create-account-screen" class="screen">
         <!-- Close button -->
         <button class="close-button" onclick="switchScreen('login-register')">[x]</button>
-
         <div class="game-title">Create Account</div>
 
         <div class="create-account-form">
@@ -705,10 +713,59 @@
         </div>
     </div>
 
+    <!-- Forgot Password Screen -->
+    <div id="forgot-password-screen" class="screen">
+        <!-- Close button -->
+        <button class="close-button" onclick="switchScreen('login-register')">[x]</button>
+
+        <div class="game-title">Reset Password</div>
+
+        <div class="create-account-form">
+            <div class="form-group">
+                <label for="reset-username">Username:</label>
+                <input type="text" id="reset-username" name="username">
+                <div class="error-message" id="reset-username-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="reset-email">Email:</label>
+                <input type="email" id="reset-email" name="email">
+                <div class="error-message" id="reset-email-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="reset-password">New Password:</label>
+                <input type="password" id="reset-password" name="password">
+                <div class="password-strength">
+                    <div class="password-strength-indicator" id="reset-password-strength"></div>
+                </div>
+                <div class="error-message" id="reset-password-error"></div>
+            </div>
+
+            <div class="password-requirements">
+                <h3>Password Requirements:</h3>
+                <ul id="reset-requirements-list">
+                    <li id="reset-req-length" class="unmet">At least 10 characters</li>
+                    <li id="reset-req-uppercase" class="unmet">At least 1 uppercase character</li>
+                    <li id="reset-req-lowercase" class="unmet">At least 1 lowercase character</li>
+                    <li id="reset-req-number" class="unmet">At least 1 number</li>
+                    <li id="reset-req-special" class="unmet">At least 1 special character</li>
+                </ul>
+            </div>
+
+            <div class="success-message" id="reset-success-message"></div>
+        </div>
+
+        <div class="button-group">
+            <button id="reset-password-submit" disabled>Reset Password</button>
+            <button class="secondary-button" onclick="switchScreen('login-register')">Back to Login</button>
+        </div>
+    </div>
+
     <!-- Main Menu Screen -->
     <div id="main-menu" class="screen">
         <div class="screen-title">Main Menu</div>
-        <div class="game-logo" style="font-size: 30px; margin: 20px 0;">🔒</div>
+        <img src="CBS-logo.png" alt="Cybersecurity Game Logo" style="height: 120px;">
 
         <p>Welcome to the Cybersecurity Awareness Game!</p>
         <p id="welcome-message">Test your knowledge about cybersecurity threats and protections.</p>
@@ -762,16 +819,19 @@
             <div class="progress-container">
                 <div class="progress-bar" id="profile-phishing-progress" style="width:75%">75%</div>
             </div>
+            <div id="phishing-stats-detail" class="stats-detail">15 correct out of 20 questions</div>
 
             <p><strong>Social Engineering:</strong></p>
             <div class="progress-container">
                 <div class="progress-bar" id="profile-social-progress" style="width:90%">90%</div>
             </div>
+            <div id="social-stats-detail" class="stats-detail">18 correct out of 20 questions</div>
 
             <p><strong>Mobile Security:</strong></p>
             <div class="progress-container">
                 <div class="progress-bar" id="profile-mobile-progress" style="width:60%">60%</div>
             </div>
+            <div id="mobile-stats-detail" class="stats-detail">12 correct out of 20 questions</div>
         </div>
 
         <div class="button-group">
@@ -933,6 +993,15 @@
                 if (response.success) {
                     currentUser = response.user;
 
+                    // Initialize category stats if they don't exist
+                    if (!currentUser.categoryStats) {
+                        currentUser.categoryStats = {
+                            phishing: { correct: 0, total: 0 },
+                            social: { correct: 0, total: 0 },
+                            mobile: { correct: 0, total: 0 }
+                        };
+                    }
+
                     // Show success message
                     const successMessage = document.getElementById('create-success-message');
                     successMessage.textContent = 'Account created successfully!';
@@ -960,10 +1029,22 @@
             });
 
             // Handle login response
-            // Handle login response
             socket.on('loginResponse', (response) => {
                 if (response.success) {
                     currentUser = response.user;
+
+                    // Initialize category stats if they don't exist
+                    if (!currentUser.categoryStats) {
+                        currentUser.categoryStats = {
+                            phishing: { correct: 0, total: 0 },
+                            social: { correct: 0, total: 0 },
+                            mobile: { correct: 0, total: 0 }
+                        };
+                    }
+                    // Ensure gamesPlayed is initialized
+                    if (currentUser.gamesPlayed === undefined) {
+                        currentUser.gamesPlayed = 0;
+                    }
 
                     // Update welcome message
                     document.getElementById('welcome-message').textContent =
@@ -976,28 +1057,37 @@
                     switchScreen('main-menu');
                 } else {
                     // Show error message
-                    const loginError = document.getElementById('login-error');
-                    const loginButton = document.getElementById('login-button');
-                    loginError.textContent = response.message || 'Invalid username or password';
-        
-                    // If the account is locked, start a countdown timer
-                    if (response.lockTimeRemaining) {
-                        // Disable the login button during lockout
-                        loginButton.disabled = true;
-            
-                        let timeRemaining = response.lockTimeRemaining;
-                        const countdownInterval = setInterval(() => {
-                            timeRemaining--;
-                            loginError.textContent = `Account locked. Try again in ${timeRemaining} seconds.`;
-                
-                            if (timeRemaining <= 0) {
-                                clearInterval(countdownInterval);
-                                loginButton.disabled = false;
-                                loginError.textContent = 'Account unlocked. You may try again.';
-                            }
-                        }, 1000);
-                    }
-               }
+                    document.getElementById('login-error').textContent = response.message || 'Invalid username or password';
+                }
+            });
+
+            // Handle reset password response
+            socket.on('resetPasswordResponse', (response) => {
+                if (response.success) {
+                    // Show success message
+                    const successMessage = document.getElementById('reset-success-message');
+                    successMessage.textContent = 'Password changed successfully!';
+                    successMessage.style.display = 'block';
+
+                    // Clear form
+                    document.getElementById('reset-username').value = '';
+                    document.getElementById('reset-email').value = '';
+                    document.getElementById('reset-password').value = '';
+
+                    // Reset password strength
+                    document.getElementById('reset-password-strength').style.width = '0%';
+                    document.querySelectorAll('#reset-requirements-list li').forEach(li => {
+                        li.className = 'unmet';
+                    });
+
+                    // Redirect to login after a delay
+                    setTimeout(function () {
+                        switchScreen('login-register');
+                    }, 2000);
+                } else {
+                    // Show error message
+                    document.getElementById('reset-username-error').textContent = response.message || 'Incorrect credentials';
+                }
             });
 
             // Handle player update (online players)
@@ -1020,7 +1110,7 @@
             // Handle user data update
             socket.on('userUpdated', (data) => {
                 // Update the current user object with new data
-                currentUser = { ...currentUser, ...data.user };
+                currentUser = { ...currentUser, ...data.user, gamePlayed: data.user.gamesPlayed !== undefined ? data.user.gamesPlayed : currentUser.gamesPlayed || 0 };
 
                 // Update the profile if currently viewing it
                 if (document.getElementById('user-profile').classList.contains('active')) {
@@ -1028,33 +1118,45 @@
                 }
             });
 
+            // Handle user stats updated
+            socket.on('userStatsUpdated', (data) => {
+                if (currentUser && data.userId === currentUser.id) {
+                    currentUser.categoryStats = data.categoryStats;
+
+                    // Update profile if we're on that page
+                    if (document.getElementById('user-profile').classList.contains('active')) {
+                        updateProfileStatistics();
+                    }
+                }
+            });
+
             // Handle question data
             socket.on('questionsData', (data) => {
-    console.log("Received questions from server:", data);
+                console.log("Received questions from server:", data);
 
-    if (data.questions && data.questions.length > 0) {
-        // Randomize the questions array
-        currentQuestions = shuffleArray([...data.questions]);
-        console.log("Questions randomized:", currentQuestions);
+                if (data.questions && data.questions.length > 0) {
+                    // Randomize the questions array
+                    currentQuestions = shuffleArray([...data.questions]);
+                    console.log("Questions randomized:", currentQuestions);
 
-        // Re-enable answer options
-        document.querySelectorAll('.answer-option').forEach(option => {
-            option.style.pointerEvents = "auto";
-        });
+                    // Re-enable answer options
+                    document.querySelectorAll('.answer-option').forEach(option => {
+                        option.style.pointerEvents = "auto";
+                    });
 
-        // Start with the first question
-        loadQuestion(0);
-    } else {
-        // Handle case where no questions were returned
-        document.getElementById('question-text').textContent =
-            "No questions available for this category. Please try another category.";
+                    // Start with the first question
+                    loadQuestion(0);
+                } else {
+                    // Handle case where no questions were returned
+                    document.getElementById('question-text').textContent =
+                        "No questions available for this category. Please try another category.";
 
-        // Add a back button
-        const feedbackDiv = document.getElementById('answer-feedback');
-        feedbackDiv.style.display = 'block';
-        feedbackDiv.style.backgroundColor = '#ffebee';
-        feedbackDiv.innerHTML =
-            'No questions found. <button onclick="switchScreen(\'game-selection\')">Back to Categories</button>';
+                    // Add a back button
+                    const feedbackDiv = document.getElementById('answer-feedback');
+                    feedbackDiv.style.display = 'block';
+                    feedbackDiv.style.backgroundColor = '#ffebee';
+                    feedbackDiv.innerHTML =
+                        'No questions found. <button onclick="switchScreen(\'game-selection\')">Back to Categories</button>';
                 }
             });
 
@@ -1067,6 +1169,34 @@
 
         // Setup event listeners
         function setupEventListeners() {
+
+            // Reset password strength meter
+            document.getElementById('reset-password').addEventListener('input', checkResetPasswordStrength);
+
+            // Reset Password button event
+            document.getElementById('reset-password-submit').addEventListener('click', function () {
+                const username = document.getElementById('reset-username').value;
+                const email = document.getElementById('reset-email').value;
+                const password = document.getElementById('reset-password').value;
+
+                if (!username || !email || !password) {
+                    document.getElementById('reset-username-error').textContent = 'All fields are required';
+                    return;
+                }
+
+                // Clear previous error messages
+                document.getElementById('reset-username-error').textContent = '';
+                document.getElementById('reset-email-error').textContent = '';
+                document.getElementById('reset-password-error').textContent = '';
+
+                // Send reset password request to server
+                socket.emit('resetPassword', {
+                    username: username,
+                    email: email,
+                    newPassword: password
+                });
+            });
+
             // Create account button event
             document.getElementById('create-account-submit').addEventListener('click', function () {
                 const username = document.getElementById('create-username').value;
@@ -1140,6 +1270,52 @@
                     switchScreen('login-register');
                 });
             });
+        }
+
+        // Check reset password strength
+        function checkResetPasswordStrength() {
+            const password = document.getElementById('reset-password').value;
+            const strengthIndicator = document.getElementById('reset-password-strength');
+            const resetButton = document.getElementById('reset-password-submit');
+
+            // Check requirements
+            const requirements = {
+                length: password.length >= 10,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[^A-Za-z0-9]/.test(password)
+            };
+
+            // Update requirement list
+            document.getElementById('reset-req-length').className = requirements.length ? 'met' : 'unmet';
+            document.getElementById('reset-req-uppercase').className = requirements.uppercase ? 'met' : 'unmet';
+            document.getElementById('reset-req-lowercase').className = requirements.lowercase ? 'met' : 'unmet';
+            document.getElementById('reset-req-number').className = requirements.number ? 'met' : 'unmet';
+            document.getElementById('reset-req-special').className = requirements.special ? 'met' : 'unmet';
+
+            // Calculate strength percentage
+            let strengthPoints = 0;
+            Object.values(requirements).forEach(req => {
+                if (req) strengthPoints++;
+            });
+
+            const strengthPercentage = (strengthPoints / 5) * 100;
+
+            // Update strength indicator
+            strengthIndicator.style.width = strengthPercentage + '%';
+
+            // Set color based on strength
+            if (strengthPercentage < 40) {
+                strengthIndicator.style.backgroundColor = '#F44336'; // Red
+            } else if (strengthPercentage < 80) {
+                strengthIndicator.style.backgroundColor = '#FFC107'; // Yellow
+            } else {
+                strengthIndicator.style.backgroundColor = '#4CAF50'; // Green
+            }
+
+            // Enable or disable reset button
+            resetButton.disabled = strengthPercentage < 100;
         }
 
         // Simulate splash screen loading
@@ -1248,6 +1424,121 @@
             }
         }
 
+        // Function to update profile statistics based on game results
+        function updateProfileStatistics() {
+            // Check if user exists
+            if (!currentUser) return;
+
+            // Initialize category stats if they don't exist
+            if (!currentUser.categoryStats) {
+                currentUser.categoryStats = {
+                    phishing: { correct: 0, total: 0 },
+                    social: { correct: 0, total: 0 },
+                    mobile: { correct: 0, total: 0 }
+                };
+            }
+
+            // Calculate percentages for each category
+            const calculatePercentage = (correct, total) => {
+                return total > 0 ? Math.round((correct / total) * 100) : 0;
+            };
+
+            // Get DOM elements for progress bars
+            const phishingBar = document.getElementById('profile-phishing-progress');
+            const socialBar = document.getElementById('profile-social-progress');
+            const mobileBar = document.getElementById('profile-mobile-progress');
+
+            // Calculate percentages
+            const phishingPercentage = calculatePercentage(
+                currentUser.categoryStats.phishing.correct,
+                currentUser.categoryStats.phishing.total
+            );
+
+            const socialPercentage = calculatePercentage(
+                currentUser.categoryStats.social.correct,
+                currentUser.categoryStats.social.total
+            );
+
+            const mobilePercentage = calculatePercentage(
+                currentUser.categoryStats.mobile.correct,
+                currentUser.categoryStats.mobile.total
+            );
+
+            // Update the progress bars with the calculated percentages
+            if (phishingBar) {
+                phishingBar.style.width = phishingPercentage + '%';
+                phishingBar.textContent = phishingPercentage + '%';
+            }
+
+            if (socialBar) {
+                socialBar.style.width = socialPercentage + '%';
+                socialBar.textContent = socialPercentage + '%';
+            }
+
+            if (mobileBar) {
+                mobileBar.style.width = mobilePercentage + '%';
+                mobileBar.textContent = mobilePercentage + '%';
+            }
+
+            // Update additional stats in the profile if they exist
+            const phishingStatsElement = document.getElementById('phishing-stats-detail');
+            const socialStatsElement = document.getElementById('social-stats-detail');
+            const mobileStatsElement = document.getElementById('mobile-stats-detail');
+
+            if (phishingStatsElement) {
+                phishingStatsElement.textContent = `${currentUser.categoryStats.phishing.correct} correct out of ${currentUser.categoryStats.phishing.total} questions`;
+            }
+
+            if (socialStatsElement) {
+                socialStatsElement.textContent = `${currentUser.categoryStats.social.correct} correct out of ${currentUser.categoryStats.social.total} questions`;
+            }
+
+            if (mobileStatsElement) {
+                mobileStatsElement.textContent = `${currentUser.categoryStats.mobile.correct} correct out of ${currentUser.categoryStats.mobile.total} questions`;
+            }
+        }
+
+        // Function to update the user's stats after completing a game
+        function updateUserStatsAfterGame(category, correctAnswers, totalQuestions) {
+            if (!currentUser || !currentUser.categoryStats) return;
+
+            // Map the game category to the internal category name
+            let categoryKey;
+            switch (category.toLowerCase()) {
+                case 'phishing attacks':
+                case 'phishing defense':
+                case 'phishing':
+                    categoryKey = 'phishing';
+                    break;
+                case 'social engineering':
+                    categoryKey = 'social';
+                    break;
+                case 'mobile device security':
+                case 'mobile security':
+                case 'password security': // Based on your HTML, this maps to Mobile
+                    categoryKey = 'mobile';
+                    break;
+                default:
+                    console.warn('Unknown category:', category);
+                    return;
+            }
+
+            // Update the stats for this category
+            currentUser.categoryStats[categoryKey].correct += correctAnswers;
+            currentUser.categoryStats[categoryKey].total += totalQuestions;
+
+            // Update the profile display if we're on the profile page
+            if (document.getElementById('user-profile').classList.contains('active')) {
+                updateProfileStatistics();
+            }
+
+            // Also send the updated stats to the server
+            socket.emit('updateUserStats', {
+                userId: currentUser.id,
+                categoryStats: currentUser.categoryStats
+            });
+        }
+
         // Update profile page with user data
         function updateProfilePage() {
             if (!currentUser) return;
@@ -1257,25 +1548,8 @@
             document.getElementById('profile-games-played').textContent = currentUser.gamesPlayed || 0;
             document.getElementById('profile-high-score').textContent = currentUser.highscore || 0;
 
-            // Update category progress bars
-            const phishingBar = document.getElementById('profile-phishing-progress');
-            const socialBar = document.getElementById('profile-social-progress');
-            const mobileBar = document.getElementById('profile-mobile-progress');
-
-            if (currentUser.categoryProgress) {
-                const phishingProgress = currentUser.categoryProgress.phishing || 0;
-                const socialProgress = currentUser.categoryProgress.social || 0;
-                const mobileProgress = currentUser.categoryProgress.mobile || 0;
-
-                phishingBar.style.width = phishingProgress + '%';
-                phishingBar.textContent = phishingProgress + '%';
-
-                socialBar.style.width = socialProgress + '%';
-                socialBar.textContent = socialProgress + '%';
-
-                mobileBar.style.width = mobileProgress + '%';
-                mobileBar.textContent = mobileProgress + '%';
-            }
+            // Update statistics based on actual game data
+            updateProfileStatistics();
         }
 
         // Check password strength
@@ -1583,6 +1857,8 @@
 
             // Send game results to server
             if (currentUser && !currentUser.isGuest) {
+                // Increment games played locally (will be synced from server later)
+                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
                 socket.emit('gameCompleted', {
                     category: currentCategory,
                     score: currentScore,
@@ -1601,8 +1877,8 @@
                     currentUser.highscore = currentScore;
                 }
 
-                // Increment games played locally to show immediately
-                currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                // Update user's category stats with the results from this game
+                updateUserStatsAfterGame(currentCategory, correctAnswers, currentQuestions.length);
 
                 // Update profile page in case user navigates there
                 updateProfilePage();
@@ -1793,46 +2069,6 @@
             });
         }
 
-        // Show challenge modal
-        function showChallengeModal(player) {
-            // Create modal
-            const modal = document.createElement('div');
-            modal.className = 'challenge-modal';
-            modal.innerHTML = `
-                <div class="challenge-modal-content">
-                    <h3>Challenge ${player}</h3>
-                    <p>Select a category:</p>
-                    <div class="category-buttons">
-                        <button class="category-button" data-category="phishing">Phishing</button>
-                        <button class="category-button" data-category="social">Social Engineering</button>
-                        <button class="category-button" data-category="mobile">Mobile Security</button>
-                    </div>
-                    <div class="modal-buttons">
-                        <button id="cancel-challenge">Cancel</button>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-
-            // Add event listeners
-            document.getElementById('cancel-challenge').addEventListener('click', function () {
-                document.body.removeChild(modal);
-            });
-
-            const categoryButtons = modal.querySelectorAll('.category-button');
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const category = this.getAttribute('data-category');
-                    socket.emit('challengePlayer', {
-                        target: player,
-                        category: category
-                    });
-                    document.body.removeChild(modal);
-                    showNotification(`Challenge sent to ${player}!`);
-                });
-            });
-        }
 
         // Show notification
         function showNotification(message) {
@@ -1993,46 +2229,46 @@
 
         // Initialize multiplayer features
         function initMultiplayer() {
-    // Add player list to main menu
-    const playerListContainer = document.createElement('div');
-    playerListContainer.id = 'online-players';
-    playerListContainer.className = 'online-players-container';
-    playerListContainer.innerHTML = `
-        <h3>Online Players</h3>
-        <ul id="player-list"></ul>
-    `;
-    
-    const mainMenu = document.getElementById('main-menu');
-    mainMenu.appendChild(playerListContainer);
-    
-    // Update player list when it changes
-    socket.on('playerUpdate', (data) => {
-        const playerList = document.getElementById('player-list');
-        playerList.innerHTML = '';
-        
-        data.players.forEach(player => {
-            const li = document.createElement('li');
-            
-            // Highlight current user
-            if (currentUser && player === currentUser.username) {
-                li.className = 'current-user';
-                li.textContent = player + ' (You)';
-            } else {
-                li.textContent = player;
-            }
-            
-            playerList.appendChild(li);
-        });
-    });
-    
-    // Handle socket events for multiplayer
-    socket.on('gameStarted', (data) => {
-        if (data.players.includes(currentUser.username)) {
-            // This user is part of the match
-            startGame(data.category);
+            // Add player list to main menu
+            const playerListContainer = document.createElement('div');
+            playerListContainer.id = 'online-players';
+            playerListContainer.className = 'online-players-container';
+            playerListContainer.innerHTML = `
+                <h3>Online Players</h3>
+                <ul id="player-list"></ul>
+            `;
+
+            const mainMenu = document.getElementById('main-menu');
+            mainMenu.appendChild(playerListContainer);
+
+            // Update player list when it changes
+            socket.on('playerUpdate', (data) => {
+                const playerList = document.getElementById('player-list');
+                playerList.innerHTML = '';
+
+                data.players.forEach(player => {
+                    const li = document.createElement('li');
+
+                    // Highlight current user
+                    if (currentUser && player === currentUser.username) {
+                        li.className = 'current-user';
+                        li.textContent = player + ' (You)';
+                    } else {
+                        li.textContent = player;
+                    }
+
+                    playerList.appendChild(li);
+                });
+            });
+
+            // Handle socket events for multiplayer
+            socket.on('gameStarted', (data) => {
+                if (data.players.includes(currentUser.username)) {
+                    // This user is part of the match
+                    startGame(data.category);
+                }
+            });
         }
-    });
-}
     </script>
     <script src="/chat.js"></script>
 </body>
