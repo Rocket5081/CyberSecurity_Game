@@ -1199,15 +1199,28 @@
 
             // Create account button event
             document.getElementById('create-account-submit').addEventListener('click', function () {
-                const username = document.getElementById('create-username').value;
-                const email = document.getElementById('create-email').value;
+                const username = document.getElementById('create-username').value.trim();
+                const email = document.getElementById('create-email').value.trim();
                 const password = document.getElementById('create-password').value;
 
+                // Clear previous errors
+                document.getElementById('create-username-error').textContent = '';
+                document.getElementById('create-email-error').textContent = '';
+
+                // Validation
                 if (!username || !email || !password) {
                     document.getElementById('create-username-error').textContent = 'All fields are required';
                     return;
                 }
+    
+                // Basic email validation
+                if (!validateEmail(email)) {
+                    document.getElementById('create-email-error').textContent = 'Please enter a valid email address';
+                    return;
+                }
 
+                console.log("Sending registration with email:", email); // Debug log
+    
                 // Send registration request to server
                 socket.emit('registerUser', {
                     username: username,
@@ -1215,6 +1228,12 @@
                     password: password
                 });
             });
+
+            // Email validation helper function
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
 
             // Login button event
             document.getElementById('login-button').addEventListener('click', function () {
