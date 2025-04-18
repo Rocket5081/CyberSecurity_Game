@@ -42,6 +42,11 @@ function getOnlinePlayers() {
 async function registerUser(userData) {
   const hashedPassword = sha256(userData.password);
   
+  console.log("Registering user with data:", {
+    username: userData.username,
+    email: userData.email
+  }); // Debug log
+  
   const { data, error } = await supabase
     .from('User')
     .insert([{
@@ -49,12 +54,17 @@ async function registerUser(userData) {
       Password_hash: hashedPassword,
       Highscore: 0,
       GamesPlayed: 0,
-      RegistrationDate: new Date().toISOString()
+      RegistrationDate: new Date().toISOString(),
+      email: userData.email 
     }])
-    .select()
-    .single();
-
-  return { data, error };
+    .select();
+    
+  if (error) {
+    console.error("Error inserting user:", error);
+    return { error };
+  }
+  
+  return { data: data[0] };
 }
 
 async function authenticateUser(username, password) {
@@ -223,25 +233,36 @@ io.on('connection', (socket) => {
   // User Registration
   socket.on('registerUser', async (userData) => {
     try {
+      console.log("Received registration data:", {
+        username: userData.username,
+        email: userData.email
+      }); // Debug log
+      
       // Check if username exists
       const { data: existingUser } = await supabase
         .from('User')
         .select('Username')
         .eq('Username', userData.username)
         .single();
-
+  
       if (existingUser) {
         return socket.emit('registrationResponse', {
           success: false,
           message: 'Username already exists'
         });
       }
-
+  
       // Register new user
       const { data: newUser, error } = await registerUser(userData);
       
-      if (error) throw error;
-
+      if (error) {
+        console.error("Registration error:", error);
+        return socket.emit('registrationResponse', {
+          success: false,
+          message: 'Registration failed: ' + error.message
+        });
+      }
+  
       // Update game state
       gameState.players[socket.id] = {
         userId: newUser.UserID,
@@ -249,18 +270,18 @@ io.on('connection', (socket) => {
         online: true,
         isGuest: false
       };
-
+  
       socket.emit('registrationResponse', {
         success: true,
         user: {
           userId: newUser.UserID,
           username: newUser.Username,
           highscore: newUser.Highscore,
-          gamesPlayed: newUser.GamesPlayed || 0,
-          registrationDate: newUser.RegistrationDate
+          registrationDate: newUser.RegistrationDate,
+          email: newUser.email  // Include email in response
         }
       });
-
+  
       io.emit('playerUpdate', { players: getOnlinePlayers() });
     } catch (error) {
       console.error('Registration error:', error);
@@ -495,7 +516,7 @@ async function resetUserPassword(username, email, newPassword) {
     // Check if user exists and email matches
     const { data: user, error: userError } = await supabase
       .from('User')
-      .select('UserID, Email')
+      .select('UserID, email')
       .eq('Username', username)
       .single();
     
